@@ -125,7 +125,7 @@ ipch/
 
 # TFS 2012 Local Workspace
 $tf/
-
+.env
 # Guidance Automation Toolkit
 *.gpState
 
@@ -287,6 +287,7 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
+.env
 # Visual Studio 6 build log
 *.plg
 
