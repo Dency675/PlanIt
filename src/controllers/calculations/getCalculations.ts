@@ -16,7 +16,6 @@ const getCalculations = async (req: Request, res: Response): Promise<void> => {
     const found = await calculations.findOne({
       where: { id: id }, 
     });
-
     if (found) {
       res.status(200).json({
         message: "Data retrieved successfully",
