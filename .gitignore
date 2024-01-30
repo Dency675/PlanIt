@@ -285,9 +285,6 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
-
-.env
-
 # Visual Studio 6 build log
 *.plg
 
@@ -399,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Add .env file to ignore list
+.env

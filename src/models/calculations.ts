@@ -9,10 +9,20 @@ calculations.init({
         autoIncrement: true,
         primaryKey: true,
     },
-    calculation_name: {
+    calculationName: {
         type: DataTypes.STRING(255),
         allowNull: false,
     },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
 },{
     sequelize,
     modelName:'calculations', 
