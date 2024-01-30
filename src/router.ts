@@ -4,6 +4,7 @@ import userStoriesRouter from "./routers/userStories";
 import noteInformationRouter from "./routers/noteInformation";
 import estimationRouter from "./routers/estimationsRouter";
 import scaleRouter from "./routers/scalesRouter";
+import calculationsRouter from "./routers/calculations";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ const chooseRoutes = (app: Express) => {
   app.use(noteInformationRouter);
   app.use(estimationRouter)
   app.use(scaleRouter)
+   app.use(calculationsRouter);
 };
 
 export default chooseRoutes;
