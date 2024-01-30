@@ -1,9 +1,8 @@
-
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
 
 /**
- * Handles the retrieval calculatipon method by id.
+ * Handles the retrieval calculation method by id.
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
@@ -13,6 +12,13 @@ import calculations from "../../models/calculations";
 const getCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.query;
+    if (!id) {
+      res.status(400).json({
+        message: "ID not provided",
+      });
+      return;
+    }
+
     const found = await calculations.findOne({
       where: { id: id }, 
     });

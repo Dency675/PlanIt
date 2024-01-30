@@ -12,6 +12,14 @@ import Calculations from "../../models/calculations";
 const addCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
     const { calculationName } = req.body;
+
+    if (!calculationName) {
+      res.status(400).json({
+        error: "Calculation name not provided",
+      });
+      return;
+    }
+
     const calculation = await Calculations.create({ calculationName });
     res.status(200).json({
       message: "Data inserted successfully",
