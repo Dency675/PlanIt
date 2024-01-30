@@ -2,14 +2,20 @@
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
 
-// Function for retrieving calculations
+/**
+ * Handles the retrieval calculatipon method by id.
+ *
+ * @param {Request} req - Express Request object containing client data.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
+ */
+
 const getCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.query;
     const found = await calculations.findOne({
       where: { id: id }, 
     });
-
     if (found) {
       res.status(200).json({
         message: "Data retrieved successfully",

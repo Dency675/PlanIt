@@ -3,6 +3,7 @@ import calculationsRouter from "./routers/calculations";
 const router = express.Router();
 
 const chooseRoutes = (app: Express) => {
+//get and post of calculations
   app.use(calculationsRouter);
 };
 
