@@ -1,22 +1,29 @@
-import userStories from "../../models/userStories";
 import { Request, Response } from "express";
+import userStories from "../../models/userStories";
 
 const addUserStories = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userStory } = req.body;
-    if (!userStory) {
+    const { userStories: userStoriesArray } = req.body;
+    if (
+      !userStoriesArray ||
+      !Array.isArray(userStoriesArray) ||
+      userStoriesArray.length === 0
+    ) {
       res.status(400).json({
-        error: "Bad Request: 'user story' is required in the request body.",
+        error:
+          "Bad Request: 'userStories' should be a non-empty array in the request body.",
       });
       return;
     }
 
-    const data = await userStories.create(
-      { userStory: userStory },
-      { raw: true }
+    const createdUserStories = await userStories.bulkCreate(
+      userStoriesArray.map((userStory: string) => ({ userStory }))
     );
 
-    res.status(200).json({ message: "Data inserted successfully", data });
+    res.status(200).json({
+      message: "Data inserted successfully",
+      data: createdUserStories,
+    });
   } catch (error: any) {
     if (error.name === "SequelizeValidationError") {
       const validationErrors = error.errors.map((err: any) => ({
