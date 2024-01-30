@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
 
@@ -13,6 +12,13 @@ import calculations from "../../models/calculations";
 const getCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.query;
+    if (!id) {
+      res.status(400).json({
+        message: "ID not provided",
+      });
+      return;
+    }
+
     const found = await calculations.findOne({
       where: { id: id }, 
     });
