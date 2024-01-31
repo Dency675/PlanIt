@@ -45,8 +45,8 @@ Scales.init({
     underscored: true,
 });
 
-Scales.belongsTo(Estimations, { foreignKey: 'estimation_id',
+Scales.belongsTo(Estimations, { foreignKey: 'estimationId',
 targetKey: "id" });
-Estimations.hasMany(Scales, { foreignKey: 'estimation_id' });
+Estimations.hasMany(Scales, { foreignKey: 'estimationId' });
  
 export default Scales;
