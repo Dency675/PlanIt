@@ -12,12 +12,12 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
     }
 
     const activeTeamMembers = await teamMemberInformation.findAll({
-      where: { team_id: team_id, status: 'active' },attributes:[],
+      where: { teamId: team_id, status: 'active' },attributes:[],
       include: [
         {
           model: userInformation,
           where: { status: 'active' },
-          attributes: ['name'] 
+          attributes: ['givenName'] 
         }
       ]
     });
