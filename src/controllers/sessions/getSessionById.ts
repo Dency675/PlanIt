@@ -6,6 +6,14 @@ import Estimation from "../../models/estimations";
 import Calculation from "../../models/calculations";
 import { Sequelize } from "sequelize";
 
+/**
+ * Retrieves session details by session ID.
+ *
+ * @param {Request} req - Express Request object containing the session ID.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<Response>} - A JSON response containing session details or an error message along with the appropriate status code.
+ */
+
 const getSessionById = async (
   req: Request,
   res: Response

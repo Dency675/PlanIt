@@ -5,7 +5,13 @@ interface SessionPostResponse {
   message: string;
   data: Session;
 }
-
+/**
+ * Adds a new session to the database.
+ *
+ * @param {Request} req - Express Request object containing session data.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<Response<SessionPostResponse>>} - A JSON response indicating the success or failure of the session creation operation.
+ */
 const addSessions = async (
   req: Request,
   res: Response
