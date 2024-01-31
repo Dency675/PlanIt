@@ -24,7 +24,7 @@ export const searchEstimations = async (
 
       const results = await Estimations.findAll({
         where: {
-          estimation_name: {
+          estimationName: {
             [Op.like]: `%${search}%`,
           },
         },

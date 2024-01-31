@@ -12,18 +12,18 @@ import Scales from '../../models/scales';
 export const postScales = async(req: Request, res: Response):Promise<void> => {
 
 try{
-    const { estimation_id, scale_name, scale_value } = req.body;
+    const { estimationId, scaleName, scaleValue } = req.body;
    
-    if (!scale_name||!estimation_id||!scale_value) {
+    if (!scaleName||!estimationId||!scaleValue) {
         res.status(422).json({error: "Missing Values "});
         return;
       }
 
     const found = await Scales.create(
           {
-            estimation_id:estimation_id,
-            scale_name:scale_name, 
-            scale_value:scale_value
+            estimationId:estimationId,
+            scaleName:scaleName, 
+            scaleValue:scaleValue
           } 
         );
           

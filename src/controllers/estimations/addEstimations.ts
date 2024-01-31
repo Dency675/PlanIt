@@ -32,12 +32,12 @@ const uploadEstimations = async (req: Request, res: Response) => {
             return res.status(422).json({ message: 'No valid CSV records found' });
           }
      
-          const estimation_name = csvData.map((record) => record.estimation_name);
+          const estimationName = csvData.map((record) => record.estimationName);
      
-          // Check for existing training programs
+          // Check for existing estimations
           const existingEstimations = await Estimations.findAll({
             where: {
-                estimation_name: estimation_name,
+                estimationName: estimationName,
             },
           });
      

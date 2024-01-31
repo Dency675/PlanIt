@@ -13,14 +13,14 @@ export const getEstimationsByID = async(req: Request, res: Response):Promise<voi
 
 try{
 
-        const { estimation_name } = req.query;
+        const { estimationName } = req.query;
 
-        if (!estimation_name) {
+        if (!estimationName) {
           res.status(422).json({error: "Missing Estimation Name "});
           return;
         }
 
-        const data = await Estimations.findOne({ where: { estimation_name: estimation_name }, raw: true });
+        const data = await Estimations.findOne({ where: { estimationName: estimationName }, raw: true });
         
         if(data){
           res.status(201).json({ ...data });

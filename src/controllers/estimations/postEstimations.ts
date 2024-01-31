@@ -12,16 +12,16 @@ import Estimations from '../../models/estimations';
 export const postEstimations = async(req: Request, res: Response):Promise<void> => {
 
 try{
-    const { estimation_name } = req.body;
+    const { estimationName } = req.body;
    
-    if (!estimation_name) {
+    if (!estimationName) {
       res.status(422).json({error: "Missing Estimation Name "});
       return;
     }
 
     const found = await Estimations.create(
           {
-            estimation_name:estimation_name,
+            estimationName:estimationName,
           } 
         );
 

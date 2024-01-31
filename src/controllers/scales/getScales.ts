@@ -14,18 +14,18 @@ export const getScalesByID = async(req: Request, res: Response):Promise<void> =>
 
 try{
 
-        const { estimation_id } = req.query;
+        const { estimationId } = req.query;
 
-        if (!estimation_id) {
+        if (!estimationId) {
             res.status(422).json({error: "Missing Values "});
             return;
           }
 
-        const data = await Scales.findAll({ where: { estimation_id: estimation_id },
+        const data = await Scales.findAll({ where: { estimationId: estimationId },
             include: [
                 {
                     model: Estimations,
-                    attributes: ['estimation_name'],
+                    attributes: ['estimationName'],
                 }],
                  raw: true });
                 

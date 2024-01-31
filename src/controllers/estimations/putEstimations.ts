@@ -12,16 +12,16 @@ import Estimations from '../../models/estimations';
 export const putEstimations = async(req: Request, res: Response):Promise<void> => {
 
 try{
-    const { id,estimation_name } = req.body;
+    const { id,estimationName } = req.body;
     
-    if (!id||!estimation_name) {
+    if (!id||!estimationName) {
       res.status(422).json({error: "Missing Values "});
       return;
     }
    
     const found = await Estimations.update(
           {
-            estimation_name:estimation_name,
+            estimationName:estimationName,
           } 
           , { where: { id: id}}
         );
