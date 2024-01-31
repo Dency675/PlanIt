@@ -6,7 +6,6 @@ import estimationRouter from "./routers/estimationsRouter";
 import scaleRouter from "./routers/scalesRouter";
 import calculationsRouter from "./routers/calculations";
 import roleRouter from "./routers/roles";
-import userInformationRouter from "./routers/userInformation";
 
 const router = express.Router();
 
@@ -18,7 +17,6 @@ const chooseRoutes = (app: Express) => {
   app.use(scaleRouter);
   app.use(calculationsRouter);
   app.use(roleRouter);
-  app.use(userInformationRouter);
 };
 
 export default chooseRoutes;
