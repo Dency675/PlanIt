@@ -1,9 +1,23 @@
 import { Request, Response, Router } from "express";
 import roles from "../../models/roles";
 
+/**
+ * Retrieves a role from the roles model by its unique identifier (id).
+ *
+ * @param {Request} req - Express Request object containing the role id.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<void>} - A JSON response containing the requested role or an error message along with the appropriate status code.
+ */
+
 const getRoleByID = async (req: Request, res: Response) => {
   try {
     const id = req.query.id;
+
+    if (!id) {
+      return res.status(422).json({
+        error: "id is missing",
+      });
+    }
 
     const value = await roles.findOne({
       where: { id: id },
