@@ -32,7 +32,6 @@ const uploadEstimations = async (req: Request, res: Response) => {
             return res.status(422).json({ message: 'No valid CSV records found' });
           }
      
-          // Extract unique titles and startDates from the csvData
           const estimation_name = csvData.map((record) => record.estimation_name);
      
           // Check for existing training programs
