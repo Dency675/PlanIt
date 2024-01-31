@@ -5,7 +5,6 @@ import putUserInformation from "../controllers/userInformation/putUserInformatio
 
 
 const userInformationRouter: Router = express.Router();
-//Routers for the userInformation table
 userInformationRouter.post(
   "/addUser",
   async (req: Request, res: Response) => {
