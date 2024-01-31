@@ -30,7 +30,7 @@ const getUser = async (req: Request, res: Response): Promise<void> => {
     console.error("Error in retrieving User:", error);
     res.status(500).json({
       message: "Internal Server Error",
-      error: error, // Log the entire error object
+      error: error, 
     });
   }
 };
