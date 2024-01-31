@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import userStories from "../../models/userStories";
 
+/**
+ * Express route handler to add user stories to the database.
+ * Expects an array of user stories in the request body.
+ *
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @returns Promise<void>
+ */
+
 const addUserStories = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userStories: userStoriesArray } = req.body;

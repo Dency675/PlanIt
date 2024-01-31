@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import userStories from "../../models/userStories";
 
+/**
+ * Express route handler to update a user story in the database.
+ * Expects 'id' and 'userStory' in the request body.
+ *
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @returns Promise<void>
+ */
+
 const updateUserStory = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, userStory } = req.body;
