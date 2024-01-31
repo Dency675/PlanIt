@@ -7,7 +7,7 @@ import scaleRouter from "./routers/scalesRouter";
 import calculationsRouter from "./routers/calculations";
 import roleRouter from "./routers/roles";
 import userInformationRouter from "./routers/userInformation";
-
+import sessionRouter from "./routers/sessions";
 const router = express.Router();
 
 const chooseRoutes = (app: Express) => {
@@ -18,7 +18,8 @@ const chooseRoutes = (app: Express) => {
   app.use(scaleRouter);
   app.use(calculationsRouter);
   app.use(roleRouter);
-  app.use(userInformationRouter)
+  app.use(userInformationRouter);
+  app.use(sessionRouter);
 };
 
 export default chooseRoutes;
