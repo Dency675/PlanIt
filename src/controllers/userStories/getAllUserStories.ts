@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import userStories from "../../models/userStories";
 
+/**
+ * Express route handler to get all user stories from the database.
+ *
+ * @param req - Express Request object
+ * @param res - Express Response object
+ * @returns Promise<void>
+ */
+
 const getAllUserStories = async (
   req: Request,
   res: Response
