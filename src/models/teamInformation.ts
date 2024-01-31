@@ -23,7 +23,7 @@ teamInformation.init(
     {
         sequelize, 
         modelName: 'teamInformation', 
-        tableName: 'teamInformation', 
+        tableName: 'team_information', 
         timestamps: true, 
         underscored: true
     }
