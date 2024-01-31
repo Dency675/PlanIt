@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Calculations from "../../models/calculations";
+import calculations from "../../models/calculations";
 
 /**
  * Handles the creation of a new calculation method in the calculations model.
@@ -20,7 +20,7 @@ const addCalculations = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const calculation = await Calculations.create({ calculationName });
+    const calculation = await calculations.create({ calculationName });
     res.status(200).json({
       message: "Data inserted successfully",
       data: calculation.toJSON(), 

@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 
+/**
+ * Handles the creation of Team member information.
+ *
+ * @param {Request} req - Express Request object containing client data.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<Response>} A JSON response indicating the success or failure of the operation.
+ */
 const addTeamMemberInformation = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId, teamId, roleId, status } = req.body;
