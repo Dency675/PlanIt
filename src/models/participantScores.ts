@@ -1,0 +1,54 @@
+import { DataTypes } from "sequelize";
+import participantScores from "../../types/modelTypes/participantScores";
+import sequelize from "../config/sequelize";
+import teamInformation from "./teamInformation";
+import userStorySessionMapping from "./userStorySessionMapping";
+
+participantScores.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      unique: true,
+    },
+
+    teamMemberId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    userStorySessionMappingId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    storyPoint: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: "participant_scores",
+    tableName: "participant_scores",
+    underscored: true,
+  }
+);
+teamInformation.hasMany(participantScores, {
+  foreignKey: "teamMemberId",
+});
+
+participantScores.belongsTo(teamInformation, {
+  foreignKey: "teamMemberId",
+  targetKey: "id",
+});
+
+userStorySessionMapping.hasMany(participantScores, {
+  foreignKey: "userStorySessionMappingId",
+});
+participantScores.belongsTo(userStorySessionMapping, {
+  foreignKey: "userStorySessionMappingId",
+  targetKey: "id",
+});
+
+export default participantScores;
