@@ -8,6 +8,8 @@ import calculationsRouter from "./routers/calculations";
 import roleRouter from "./routers/roles";
 import userInformationRouter from "./routers/userInformation";
 import sessionRouter from "./routers/sessions";
+import teamMemberInformationRouter from "./routers/teamMemberInformation";
+
 const router = express.Router();
 
 const chooseRoutes = (app: Express) => {
@@ -20,6 +22,7 @@ const chooseRoutes = (app: Express) => {
   app.use(roleRouter);
   app.use(userInformationRouter);
   app.use(sessionRouter);
+  app.use(teamMemberInformationRouter);
 };
 
 export default chooseRoutes;
