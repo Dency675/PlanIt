@@ -3,6 +3,14 @@ import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 
+/**
+ * Edits the role of an employee by updating the employee role mapping.
+ *
+ * @param {Request} req - Express Request object containing user ID, old role ID, and new role ID.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<void>} A JSON response indicating the success or failure of updating the employee role.
+ */
+
 const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId, oldRoleId, newRoleId } = req.body;

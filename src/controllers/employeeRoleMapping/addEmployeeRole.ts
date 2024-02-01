@@ -3,6 +3,14 @@ import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 
+/**
+ * Adds a new employee role mapping for a user.
+ *
+ * @param {Request} req - Express Request object containing user ID and role ID.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<void>} A JSON response indicating the success or failure of adding the employee role.
+ */
+
 const addEmployeeRole = async (req: Request, res: Response): Promise<void> => {
   try {
     const { userId, roleId } = req.body;
