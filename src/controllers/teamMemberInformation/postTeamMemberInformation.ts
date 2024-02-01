@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
+import userInformation from "../../models/userInformation";
 
 /**
  * Handles the creation of Team member information.
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
- * @returns {Promise<Response>} A JSON response indicating the success or failure of the operation.
+ * @returns {Promise<void>} A Promise indicating the completion of the operation.
  */
 const addTeamMemberInformation = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -19,17 +20,31 @@ const addTeamMemberInformation = async (req: Request, res: Response): Promise<vo
       return;
     }
 
+    const isUserActive = await userInformation.findOne({
+      where: {
+        id: userId,
+        status: 'active'
+      }
+    });
+
+    if (!isUserActive) {
+      res.status(400).json({
+        error: "User is not active",
+      });
+      return;
+    }
+
     const newTeamMember = await teamMemberInformation.create({
       userId,
       teamId,
       roleId,
       status,
     });
-
     res.status(201).json({
       message: "Team member inserted successfully",
       data: newTeamMember.toJSON(),
     });
+
   } catch (error) {
     console.error("Error inserting team member:", error);
     res.status(500).json({
