@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
-import user_story_session_mapping from "../../model/user_story_session_mapping";
+import userStorySessionMapping from "../../models/userStorySessionMapping";
 
-const add_user_story_session_mapping = async (
+/**
+ * Handles the addition of a user story session mapping.
+ * @param req - Express Request object.
+ * @param res - Express Response object.
+ * @returns {Promise<void>} - A Promise that resolves when the operation is complete.
+ */
+
+const addUserStorySessionMapping = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -20,7 +27,7 @@ const add_user_story_session_mapping = async (
       return;
     }
 
-    const data = await user_story_session_mapping.create(
+    const data = await userStorySessionMapping.create(
       {
         userStoryId,
         sessionId,
@@ -31,7 +38,7 @@ const add_user_story_session_mapping = async (
       { raw: true }
     );
     res.status(201).json({ message: "Data inserted successfully", data });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error adding user story session mapping:", error);
 
     let errorMessage = "Internal Server Error";
@@ -41,10 +48,10 @@ const add_user_story_session_mapping = async (
         "Validation Error: " +
         error.errors.map((e: any) => e.message).join(", ");
       res.status(400).json({ error: errorMessage });
-    } else {
-      res.status(500).json({ error: errorMessage });
+      return;
     }
+    res.status(500).json({ error: errorMessage });
   }
 };
 
-export default add_user_story_session_mapping;
+export default addUserStorySessionMapping;

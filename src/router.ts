@@ -9,6 +9,7 @@ import roleRouter from "./routers/roles";
 import userInformationRouter from "./routers/userInformation";
 import sessionRouter from "./routers/sessions";
 import teamMemberInformationRouter from "./routers/teamMemberInformation";
+import userStorySesssionMappingRouter from "./routers/userStorySessionMapping";
 
 const router = express.Router();
 
@@ -23,6 +24,7 @@ const chooseRoutes = (app: Express) => {
   app.use(userInformationRouter);
   app.use(sessionRouter);
   app.use(teamMemberInformationRouter);
+  app.use(userStorySesssionMappingRouter);
 };
 
 export default chooseRoutes;
