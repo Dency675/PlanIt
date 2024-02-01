@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 import participantScores from "../../models/participantScores";
 
+/**
+ * Retrieves participant scores for a specified team member.
+ * @param req - Express Request object with query parameters.
+ * @param res - Express Response object.
+ * @returns {Promise<void>} - A Promise that resolves when the operation is complete.
+
+**/
+
 const getParticipantScores = async (
   req: Request,
   res: Response

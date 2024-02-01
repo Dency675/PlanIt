@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import participantScores from "../../models/participantScores";
 
+/**
+ * Handles the addition of participant scores table.
+ * @param req - Express Request object.
+ * @param res - Express Response object.
+ * @returns {Promise<void>} - A Promise that resolves when the operation is complete.
+ */
+
 const addParticipantScores = async (
   req: Request,
   res: Response

@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import participantScores from "../../types/modelTypes/participantScores";
 import sequelize from "../config/sequelize";
+import teamInformation from "./teamInformation";
+import userStorySessionMapping from "./userStorySessionMapping";
 
 participantScores.init(
   {
@@ -32,5 +34,21 @@ participantScores.init(
     underscored: true,
   }
 );
+teamInformation.hasMany(participantScores, {
+  foreignKey: "teamMemberId",
+});
+
+participantScores.belongsTo(teamInformation, {
+  foreignKey: "teamMemberId",
+  targetKey: "id",
+});
+
+userStorySessionMapping.hasMany(participantScores, {
+  foreignKey: "userStorySessionMappingId",
+});
+participantScores.belongsTo(userStorySessionMapping, {
+  foreignKey: "userStorySessionMappingId",
+  targetKey: "id",
+});
 
 export default participantScores;
