@@ -11,7 +11,7 @@ export const sequelizeSync = async (): Promise<void> => {
     });
 
   await sequelize
-    .sync({ force: false })
+    .sync({ force: true })
     .then(() => {
       console.log("Database synced");
     })
