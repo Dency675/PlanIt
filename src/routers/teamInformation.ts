@@ -4,7 +4,6 @@ import getATeamInformation from "../controllers/teamInformations/getATeamInforma
 import addTeamInformation from "../controllers/teamInformations/postTeamInformation.ts";
 import express from "express";
 import { Request, Response } from "express";
-import getTeamInformationByUserId from "../controllers/teamInformations/getTeamInformationByUserId.ts";
 
 const teamInformationRouter = express.Router();
 
@@ -21,9 +20,6 @@ teamInformationRouter.get("/getAllTeamInformation", async(req: Request, res: Res
 });
 teamInformationRouter.get("/getATeamInformation", async(req: Request, res: Response) => {
     getATeamInformation(req,res);
-});
-teamInformationRouter.get("/getTeamInformationByUserId", async(req: Request, res: Response) => {
-    getTeamInformationByUserId(req,res);
 });
 
 export default teamInformationRouter;
