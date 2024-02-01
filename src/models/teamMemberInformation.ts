@@ -16,7 +16,7 @@ teamMemberInformation.init(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: "user_information",
+        model: 'user_information',
         key: "id",
       },
     },
@@ -24,7 +24,7 @@ teamMemberInformation.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "team_information",
+        model: 'team_information',
         key: "id",
       },
     },
@@ -32,7 +32,7 @@ teamMemberInformation.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "roles",
+        model: 'roles',
         key: "id",
       },
     },
