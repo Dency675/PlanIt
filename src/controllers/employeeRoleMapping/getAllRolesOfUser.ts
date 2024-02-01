@@ -3,6 +3,14 @@ import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 
+/**
+ * Retrieves all roles of a user based on the user ID from the EmployeeRoleMapping table.
+ *
+ * @param {Request} req - Express Request object containing the user ID.
+ * @param {Response} res - Express Response object for sending the server's response.
+ * @returns {Promise<void>} A JSON response containing the roles associated with the user.
+ */
+
 const getAllRolesOfUser = async (
   req: Request,
   res: Response

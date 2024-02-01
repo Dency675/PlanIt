@@ -8,6 +8,8 @@ import getAllRecentMeetings from "../controllers/sessions/getAllRecentMeetings";
 import addSessionParticipants from "../controllers/sessions/addSessionParticipants";
 import getParticipantsInSession from "../controllers/sessions/getParticipantsInSession";
 import getDevelopersInSession from "../controllers/sessions/getDevelopersInSession";
+import getAllRecentMeetingsOfUser from "../controllers/sessions/getAllRecentMeetingsOfUser";
+import getAllOngoingMeetingsOfUser from "../controllers/sessions/getAllOngoingMeetingsOfUser";
 
 const router = express.Router();
 
@@ -24,9 +26,15 @@ router.patch("/editSessions", (req: Request, res: Response) => {
 router.get("/getAllOngoingMeetings", (req: Request, res: Response) => {
   getAllOngoingMeetings(req, res);
 });
+router.get("/getAllOngoingMeetingsOfUser", (req: Request, res: Response) => {
+  getAllOngoingMeetingsOfUser(req, res);
+});
 
 router.get("/getAllRecentMeetings", (req: Request, res: Response) => {
   getAllRecentMeetings(req, res);
+});
+router.get("/getAllRecentMeetingsOfUser", (req: Request, res: Response) => {
+  getAllRecentMeetingsOfUser(req, res);
 });
 
 router.post("/addSessionParticipants", (req: Request, res: Response) => {
