@@ -11,9 +11,9 @@ import userInformation from "../../models/userInformation";
  */
 const addTeamMemberInformation = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, teamId, roleId, status } = req.body;
+    const { userId, teamId} = req.body;
 
-    if (!userId || !teamId || !roleId || !status) {
+    if (!userId || !teamId ) {
       res.status(400).json({
         error: "Missing required fields in request body",
       });
@@ -37,8 +37,8 @@ const addTeamMemberInformation = async (req: Request, res: Response): Promise<vo
     const newTeamMember = await teamMemberInformation.create({
       userId,
       teamId,
-      roleId,
-      status,
+      roleId:1,
+      status:"active",
     });
     res.status(201).json({
       message: "Team member inserted successfully",
