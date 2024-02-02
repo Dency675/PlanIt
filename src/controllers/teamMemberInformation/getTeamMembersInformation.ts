@@ -11,7 +11,7 @@ import userInformation from "../../models/userInformation";
  */
 const getActiveTeamMembers = async (req: Request, res: Response) => {
   try {
-    const { team_id } = req.body;
+    const { team_id } = req.query;
     if (!team_id) {
       return res.status(400).json({ error: 'teamId is required in the request body' });
     }

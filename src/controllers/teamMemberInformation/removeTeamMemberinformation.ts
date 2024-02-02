@@ -10,9 +10,9 @@ import TeamMemberInformation from "../../models/teamMemberInformation";
  */
 const removeTeamMember = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId } = req.body;
+    const { id } = req.query;
 
-    if (!userId) {
+    if (!id) {
       res.status(400).json({
         error: "User ID is missing in the request body",
       });
@@ -21,7 +21,7 @@ const removeTeamMember = async (req: Request, res: Response): Promise<void> => {
 
     const update = await TeamMemberInformation.update(
       { status: 'inactive' },
-      { where: { userId: userId } }
+      { where: { id: id } }
     );
 
     if (update[0] === 0) {
@@ -32,7 +32,7 @@ const removeTeamMember = async (req: Request, res: Response): Promise<void> => {
     }
 
     res.status(200).json({
-      message: "Team member information updated successfully",
+      message: "Team member removed successfully",
     });
   } catch (error) {
     console.error("Error updating team member information:", error);
