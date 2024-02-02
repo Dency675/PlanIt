@@ -11,7 +11,7 @@ import userInformation from "../../models/userInformation";
 
 const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email } = req.body;
+    const { email } = req.query;
     const found = await userInformation.findOne({
       where: { email: email },
     });
