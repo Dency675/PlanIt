@@ -45,26 +45,26 @@ teamMemberInformation.init(
     sequelize,
     modelName: "teamMemberInformation",
     tableName: "team_member_information",
-    underscored:true,
+    underscored: true,
   }
 );
 
 teamInformation.hasMany(teamMemberInformation, { foreignKey: "teamId" });
 teamMemberInformation.belongsTo(teamInformation, {
-    foreignKey: "teamId",
-    targetKey: "id",
-  });
+  foreignKey: "teamId",
+  targetKey: "id",
+});
 
-  userInformation.hasMany(teamMemberInformation, { foreignKey: "userId" });
-  teamMemberInformation.belongsTo(userInformation, {
-    foreignKey: "userId",
-    targetKey: "id",
-  });
+userInformation.hasMany(teamMemberInformation, { foreignKey: "userId" });
+teamMemberInformation.belongsTo(userInformation, {
+  foreignKey: "userId",
+  targetKey: "id",
+});
 
-  roles.hasMany(teamMemberInformation, { foreignKey: "roleId" });
-  teamMemberInformation.belongsTo(roles, {
-    foreignKey: "roleId",
-    targetKey: "id",
-  });
+roles.hasMany(teamMemberInformation, { foreignKey: "roleId" });
+teamMemberInformation.belongsTo(roles, {
+  foreignKey: "roleId",
+  targetKey: "id",
+});
 
 export default teamMemberInformation;

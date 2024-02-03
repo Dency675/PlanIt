@@ -9,11 +9,14 @@ import userInformation from "../../models/userInformation";
  * @param {Response} res - Express Response object for sending the server's response.
  * @returns {Promise<void>} A Promise indicating the completion of the operation.
  */
-const addTeamMemberInformation = async (req: Request, res: Response): Promise<void> => {
+const addTeamMemberInformation = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { userId, teamId} = req.body;
+    const { userId, teamId } = req.body;
 
-    if (!userId || !teamId ) {
+    if (!userId || !teamId) {
       res.status(400).json({
         error: "Missing required fields in request body",
       });
@@ -23,8 +26,8 @@ const addTeamMemberInformation = async (req: Request, res: Response): Promise<vo
     const isUserActive = await userInformation.findOne({
       where: {
         id: userId,
-        status: 'active'
-      }
+        status: "active",
+      },
     });
 
     if (!isUserActive) {
@@ -37,14 +40,13 @@ const addTeamMemberInformation = async (req: Request, res: Response): Promise<vo
     const newTeamMember = await teamMemberInformation.create({
       userId,
       teamId,
-      roleId:1,
-      status:"active",
+      roleId: "1",
+      status: "active",
     });
     res.status(201).json({
       message: "Team member inserted successfully",
       data: newTeamMember.toJSON(),
     });
-
   } catch (error) {
     console.error("Error inserting team member:", error);
     res.status(500).json({
