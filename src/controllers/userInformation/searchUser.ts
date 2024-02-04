@@ -32,7 +32,7 @@ export const searchUser = async (
           { email: { [Op.like]: `%${search}%` } },
         ],
       },
-      limit: 3,
+      limit: 10,
       offset: skip,
     });
 
