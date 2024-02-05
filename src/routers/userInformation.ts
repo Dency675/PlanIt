@@ -6,11 +6,16 @@ import addEmployeeRole from "../controllers/employeeRoleMapping/addEmployeeRole"
 import editEmployeeRole from "../controllers/employeeRoleMapping/editEmployeeRole";
 import getAllRolesOfUser from "../controllers/employeeRoleMapping/getAllRolesOfUser";
 import { searchUser } from "../controllers/userInformation/searchUser";
+import decodeTokens from "../middleware/decodeTokens";
 
 const userInformationRouter: Router = express.Router();
-userInformationRouter.post("/addUser", async (req: Request, res: Response) => {
-  postUserInformation(req, res);
-});
+userInformationRouter.post(
+  "/addUser",
+  decodeTokens,
+  async (req: Request, res: Response) => {
+    postUserInformation(req, res);
+  }
+);
 userInformationRouter.get("/getUser", async (req: Request, res: Response) => {
   getUser(req, res);
 });

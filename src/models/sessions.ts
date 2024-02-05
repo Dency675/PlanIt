@@ -16,6 +16,10 @@ Session.init(
       allowNull: false,
       unique: true,
     },
+    roomId: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
     sessionTitle: {
       type: DataTypes.STRING(255),
       allowNull: false,

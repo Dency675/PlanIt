@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import userInformation from "../../models/userInformation";
+import axios from "axios";
+import EmployeeRoleMapping from "../../models/employeeRoleMapping";
+import roles from "../../models/roles";
+import { where } from "sequelize";
 
 /**
  * Handles the creation of a new user Record in the user information table.
@@ -9,24 +13,67 @@ import userInformation from "../../models/userInformation";
  * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
  */
 
-const postUserInformation = async (req: Request, res: Response): Promise<void> => {
+const postUserInformation = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { employeeId, givenName, surName, email, department, jobTitle, joinDate, lastLoginTime, status } = req.body;
+    const graphApiUrl =
+      "https://graph.microsoft.com/v1.0/me?$select=department,id,givenName,surName,userPrincipalName,jobTitle";
+    const graphApiResponse = await axios.get(graphApiUrl, {
+      headers: {
+        Authorization: `${req.headers.authorization}`,
+      },
+    });
 
-    if (!employeeId || !givenName || !surName || !email || !department || !jobTitle || !joinDate || !status) {
-      res.status(400).json({
-        error: "Missing required fields in request body",
+    const employeeId = graphApiResponse.data.id;
+    console.log(employeeId);
+
+    const findUser = await userInformation.findOne({
+      where: { employeeId: employeeId },
+    });
+
+    if (!findUser) {
+      const userInformationAdd = await userInformation.create({
+        department: graphApiResponse.data.department || "front-end",
+        employeeId: graphApiResponse.data.id,
+        givenName: graphApiResponse.data.givenName,
+        surName: graphApiResponse.data.surName,
+        userPrincipalName: graphApiResponse.data.userPrincipalName,
+        email: graphApiResponse.data.userPrincipalName,
+        jobTitle: graphApiResponse.data.jobTitle || "developer",
+      });
+
+      res.status(200).json({
+        message: "User information inserted successfully",
+        data: userInformationAdd.toJSON(),
+      });
+    }
+
+    const userId = findUser?.id;
+    const findUserRoles = await EmployeeRoleMapping.findAll({
+      where: { userId: userId },
+      attributes: ["roleId"],
+    });
+
+    const rolesArray = findUserRoles.map((role) => role.roleId);
+
+    if (rolesArray.length == 0) {
+      res.status(200).json({
+        message: "User has no role assigned",
+        roles: [],
       });
       return;
     }
 
-    const userInformationAdd = await userInformation.create({
-      employeeId, givenName, surName, email, department, jobTitle, joinDate, lastLoginTime, status
+    const roleNames = await roles.findAll({
+      where: { id: rolesArray },
+      attributes: ["role_name"],
     });
 
     res.status(200).json({
-      message: "User information inserted successfully",
-      data: userInformationAdd.toJSON(),
+      message: "User information already in the table",
+      roles: roleNames,
     });
   } catch (error) {
     console.error("Error inserting user information:", error);
