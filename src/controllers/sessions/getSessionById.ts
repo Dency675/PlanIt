@@ -5,6 +5,9 @@ import User from "../../models/userInformation";
 import Estimation from "../../models/estimations";
 import Calculation from "../../models/calculations";
 import { Sequelize } from "sequelize";
+import SessionParticipants from "../../models/sessionParticipants";
+import participantScores from "./../../models/participantScores";
+import roles from "../../models/roles";
 
 /**
  * Retrieves session details by session ID.
@@ -28,6 +31,15 @@ const getSessionById = async (
         { model: User, as: "scrumMaster" },
         { model: Estimation, as: "estimation" },
         { model: Calculation, as: "calculation" },
+        {
+          model: SessionParticipants,
+          as: "participants",
+          include: [
+            { model: User, as: "user" },
+            { model: roles, as: "role" },
+          ],
+          where: { isJoined: true },
+        },
       ],
       attributes: [
         "id",
@@ -38,13 +50,53 @@ const getSessionById = async (
         "estimationId",
         "calculationId",
         "status",
+        [
+          Sequelize.fn("COUNT", Sequelize.col("participants.id")),
+          "participantCount",
+        ],
       ],
-      group: ["Session.id"],
+      group: ["Session.id", "participants.id"],
     });
 
     if (!sessions) {
       return res.status(404).json({ message: "Session not found" });
     }
+
+    const participants = sessions.participants.map((participant: any) => ({
+      userId: participant.user.id,
+      userName: participant.user.givenName,
+      userEmail: participant.user.email,
+      userRole: participant.role.roleName,
+    }));
+
+    let productOwnerName = "";
+    let projectManagerName = "";
+    let developerList: any[] = [];
+    let guestList: any[] = [];
+
+    sessions.participants.forEach((participant: any) => {
+      const { role, user } = participant;
+      switch (role.roleName) {
+        case "product owner":
+          productOwnerName = user.givenName;
+          break;
+        case "project manager":
+          projectManagerName = user.givenName;
+          break;
+        case "developer":
+          developerList.push({
+            userId: user.id,
+            userName: user.givenName,
+            userEmail: user.email,
+          });
+          break;
+        case "guest":
+          guestList.push({ userId: user.id, userName: user.givenName });
+          break;
+        default:
+          break;
+      }
+    });
 
     const formattedSessions = {
       id: sessions.id,
@@ -62,6 +114,11 @@ const getSessionById = async (
       scrumMasterEmployeeId: sessions.scrumMaster?.employeeId,
       estimationName: sessions.estimation?.estimationName,
       calculationName: sessions.calculation?.calculationName,
+      participantCount: participants.length,
+      productOwnerName: productOwnerName,
+      projectManagerName: projectManagerName,
+      developerList: developerList,
+      guestList: guestList,
     };
 
     return res.status(200).json({
