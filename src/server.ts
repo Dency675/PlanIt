@@ -57,7 +57,7 @@ const Room = sequelize.define("Room", {
 //   try {
 //     const { name } = req.body;
 
-//     // Create a new role in the database
+//     // Create a new role in the datasbase
 //     const role = await Role.create({ name });
 
 //     res.status(201).json(role);
@@ -187,7 +187,7 @@ app.get("/api/room/:roomId", async (req, res) => {
 io.on("connection", (socket: Socket) => {
   console.log("New client connected");
 
-  socket.on("createRoom", async (creator) => {
+  socket.on("createRoom", async (creator: any) => {
     try {
       const roomId = generateRoomId();
 
