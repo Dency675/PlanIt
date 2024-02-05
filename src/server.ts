@@ -15,18 +15,25 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const corsOptions = {
-  origin: "http://localhost:3001",
+  origin: "http://localhost:3000",
   credentials: true,
 };
+// const corsOptions = {
+//   origin: "http://localhost:3000", // Allow requests only from this origin
+//   methods: ["GET", "POST"], // Allow only specified methods
+//   allowedHeaders: ["Authorization", "Content-Type", "Referer"], // Allow only specified headers
+//   credentials: true, // Allow credentials
+//   optionsSuccessStatus: 200, // Return a successful status code for preflight requests
+// };
 
 app.use(cors(corsOptions));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const Role = sequelize.define("Roled", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    // unique: true,
   },
 });
 
