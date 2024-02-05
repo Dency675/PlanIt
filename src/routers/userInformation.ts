@@ -7,6 +7,7 @@ import editEmployeeRole from "../controllers/employeeRoleMapping/editEmployeeRol
 import getAllRolesOfUser from "../controllers/employeeRoleMapping/getAllRolesOfUser";
 import { searchUser } from "../controllers/userInformation/searchUser";
 import decodeTokens from "../middleware/decodeTokens";
+import { searchUserFilter } from "../controllers/userInformation/searchUserFilter";
 
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post(
@@ -48,6 +49,13 @@ userInformationRouter.get(
   "/searchUser",
   async (req: Request, res: Response) => {
     searchUser(req, res);
+  }
+);
+
+userInformationRouter.get(
+  "/searchUserFilter",
+  async (req: Request, res: Response) => {
+    searchUserFilter(req, res);
   }
 );
 
