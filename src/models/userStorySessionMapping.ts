@@ -51,6 +51,7 @@ userStories.hasMany(userStorySessionMapping, {
 userStorySessionMapping.belongsTo(userStories, {
   foreignKey: "userStoryId",
   targetKey: "id",
+  as: "userStory",
 });
 
 Session.hasMany(userStorySessionMapping, {
