@@ -16,7 +16,7 @@ import { where } from "sequelize";
 const postUserInformation = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response> => {
   try {
     const graphApiUrl =
       "https://graph.microsoft.com/v1.0/me?$select=department,id,givenName,surName,userPrincipalName,jobTitle";
@@ -44,7 +44,7 @@ const postUserInformation = async (
         jobTitle: graphApiResponse.data.jobTitle || "developer",
       });
 
-      res.status(200).json({
+      return res.status(200).json({
         message: "User information inserted successfully",
         data: userInformationAdd.toJSON(),
       });
@@ -59,11 +59,10 @@ const postUserInformation = async (
     const rolesArray = findUserRoles.map((role) => role.roleId);
 
     if (rolesArray.length == 0) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "User has no role assigned",
         roles: [],
       });
-      return;
     }
 
     const roleNames = await roles.findAll({
@@ -71,13 +70,13 @@ const postUserInformation = async (
       attributes: ["role_name"],
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User information already in the table",
       roles: roleNames,
     });
   } catch (error) {
     console.error("Error inserting user information:", error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Server Error",
     });
   }

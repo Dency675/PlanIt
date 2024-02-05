@@ -48,7 +48,7 @@ Session.init(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        // model: "userInformation",
+        // model: UserInformation,
         model: "user_information",
         key: "id",
       },

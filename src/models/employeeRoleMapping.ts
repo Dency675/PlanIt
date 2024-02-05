@@ -43,11 +43,12 @@ UserInformation.belongsToMany(Role, {
 Role.belongsToMany(UserInformation, {
   through: EmployeeRoleMapping,
   foreignKey: "roleId",
-});
-
-EmployeeRoleMapping.hasMany(Role, {
-  foreignKey: "roleId",
   as: "role",
 });
+
+// EmployeeRoleMapping.hasMany(Role, {
+//   foreignKey: "roleId",
+//   as: "role",
+// });
 
 export default EmployeeRoleMapping;
