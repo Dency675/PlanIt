@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import userInformation from "../../models/userInformation";
+import roles from "../../models/roles"; // Import the role model
 
 /**
- * Handles the retrival of Team members information.
+ * Handles the retrieval of Team members information.
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
@@ -13,28 +14,36 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
   try {
     const { team_id } = req.query;
     if (!team_id) {
-      return res.status(400).json({ error: 'teamId is required in the request body' });
+      return res
+        .status(400)
+        .json({ error: "teamId is required in the request body" });
     }
     const activeTeamMembers = await teamMemberInformation.findAll({
-      where: { teamId: team_id, status: 'active' },
+      where: { teamId: team_id, status: "active" },
       attributes: [],
       include: [
         {
           model: userInformation,
-          where: { status: 'active' },
-          attributes: ['givenName']
-        }
-      ]
+          where: { status: "active" },
+          attributes: ["givenName"],
+        },
+        {
+          model: roles, // Include the role model
+          attributes: ["roleName"], // Specify the attributes you want to retrieve for the role
+        },
+      ],
     });
 
     if (!activeTeamMembers || activeTeamMembers.length === 0) {
-      return res.status(404).json({ error: 'No active team members found for the given teamId' });
+      return res
+        .status(404)
+        .json({ error: "No active team members found for the given teamId" });
     }
 
     res.status(200).json({ activeTeamMembers });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
