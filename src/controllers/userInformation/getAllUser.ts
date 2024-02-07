@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import userInformation from "../../models/userInformation";
 
 /**
- * Handles the retrieval of all user information
+ * Handles the retrieval of all user information from user information table
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
