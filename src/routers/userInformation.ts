@@ -5,6 +5,7 @@ import putUserInformation from "../controllers/userInformation/putUserInformatio
 import addEmployeeRole from "../controllers/employeeRoleMapping/addEmployeeRole";
 import editEmployeeRole from "../controllers/employeeRoleMapping/editEmployeeRole";
 import getAllRolesOfUser from "../controllers/employeeRoleMapping/getAllRolesOfUser";
+import updateUserRoleToProjectManager from "../controllers/employeeRoleMapping/updateEmployeeRoleToProjectManager";
 
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post("/addUser", async (req: Request, res: Response) => {
@@ -37,4 +38,12 @@ userInformationRouter.get(
     getAllRolesOfUser(req, res);
   }
 );
+
+
+userInformationRouter.put('/updateUserRoleToProjectManager', async (req: Request, res: Response) => {
+  updateUserRoleToProjectManager(req,res);
+});
+
+
+
 export default userInformationRouter;
