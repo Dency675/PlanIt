@@ -10,6 +10,7 @@ export const searchUserFilter = async (
     const { offset, search } = req.query;
     let { userList } = req.body;
 
+    // Trim the search query if it's a string
     let searchString = search;
     if (typeof searchString === "string") {
       searchString = searchString.trim();
@@ -22,6 +23,7 @@ export const searchUserFilter = async (
 
     const excludedEmails = userList.map((user: any) => user.email);
 
+    // Search for users by name excluding users in the userList
     const userResults = await user_information.findAll({
       where: {
         [Op.and]: [

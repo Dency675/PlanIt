@@ -52,7 +52,7 @@ userInformationRouter.get(
   }
 );
 
-userInformationRouter.get(
+userInformationRouter.post(
   "/searchUserFilter",
   async (req: Request, res: Response) => {
     searchUserFilter(req, res);
