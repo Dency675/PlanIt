@@ -11,7 +11,7 @@ import Session from "../../models/sessions";
 
 const getAllOngoingMeetings = async (req: Request, res: Response) => {
   try {
-    const { teamId } = req.body;
+    const { teamId } = req.query;
 
     if (!teamId) {
       return res
@@ -20,7 +20,7 @@ const getAllOngoingMeetings = async (req: Request, res: Response) => {
     }
 
     const ongoingSessions = await Session.findAll({
-      attributes: ["sessionTitle", "createDateTime"],
+      attributes: ["id", "sessionTitle", "createDateTime"],
       where: {
         teamId: teamId,
         status: "active",
@@ -31,7 +31,7 @@ const getAllOngoingMeetings = async (req: Request, res: Response) => {
       return res.status(204).send("No Content");
     }
 
-    res.json(ongoingSessions);
+    return res.json(ongoingSessions);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });

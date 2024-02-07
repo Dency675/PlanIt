@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import userInformation from "../../models/userInformation";
-import roles from "../../models/roles"; // Import the role model
+import roles from "../../models/roles";
 
 /**
  * Handles the retrieval of Team members information.
@@ -12,15 +12,15 @@ import roles from "../../models/roles"; // Import the role model
  */
 const getActiveTeamMembers = async (req: Request, res: Response) => {
   try {
-    const { team_id } = req.query;
-    if (!team_id) {
+    const { teamId } = req.query;
+    if (!teamId) {
       return res
         .status(400)
         .json({ error: "teamId is required in the request body" });
     }
     const activeTeamMembers = await teamMemberInformation.findAll({
-      where: { teamId: team_id, status: "active" },
-      attributes: [],
+      where: { teamId: teamId, status: "active" },
+      attributes: ["id"],
       include: [
         {
           model: userInformation,
@@ -28,8 +28,8 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
           attributes: ["givenName"],
         },
         {
-          model: roles, // Include the role model
-          attributes: ["roleName"], // Specify the attributes you want to retrieve for the role
+          model: roles,
+          attributes: ["roleName"],
         },
       ],
     });
