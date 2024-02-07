@@ -109,7 +109,8 @@ const getSessionById = async (
       status: sessions.status,
       teamName: sessions.team?.teamName,
       scrumMasterId: sessions.scrumMaster?.id,
-      scrumMasterName: sessions.scrumMaster?.name,
+      scrumMasterName:
+        sessions.scrumMaster?.givenName + " " + sessions.scrumMaster?.surName,
       scrumMasterEmail: sessions.scrumMaster?.email,
       scrumMasterEmployeeId: sessions.scrumMaster?.employeeId,
       estimationName: sessions.estimation?.estimationName,

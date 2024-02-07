@@ -25,7 +25,8 @@ const getDevelopersInSession = async (
     const participants = await SessionParticipant.findAll({
       where: {
         sessionId: sessionId,
-        roleId: 3,
+        roleId: 5,
+        isJoined: true,
       },
       include: [
         {
