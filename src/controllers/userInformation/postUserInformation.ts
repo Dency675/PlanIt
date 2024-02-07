@@ -73,6 +73,7 @@ const postUserInformation = async (
     return res.status(200).json({
       message: "User information already in the table",
       roles: roleNames,
+      userId: userId,
     });
   } catch (error) {
     console.error("Error inserting user information:", error);

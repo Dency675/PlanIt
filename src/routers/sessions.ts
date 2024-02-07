@@ -10,12 +10,19 @@ import getParticipantsInSession from "../controllers/sessions/getParticipantsInS
 import getDevelopersInSession from "../controllers/sessions/getDevelopersInSession";
 import getAllRecentMeetingsOfUser from "../controllers/sessions/getAllRecentMeetingsOfUser";
 import getAllOngoingMeetingsOfUser from "../controllers/sessions/getAllOngoingMeetingsOfUser";
+import multer from "multer";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-router.post("/addSessions", (req: Request, res: Response) => {
-  addSessions(req, res);
-});
+router.post(
+  "/addSessions",
+  upload.single("excelLink"),
+  (req: Request, res: Response) => {
+    addSessions(req, res);
+  }
+);
 router.get("/getSessionById", (req: Request, res: Response) => {
   getSessionById(req, res);
 });
