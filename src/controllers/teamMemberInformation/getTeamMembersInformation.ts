@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import userInformation from "../../models/userInformation";
 import roles from "../../models/roles";
+// import userInformation from "./../../../types/modelTypes/userInformation";
 
 /**
  * Handles the retrieval of Team members information.
@@ -25,7 +26,7 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
         {
           model: userInformation,
           where: { status: "active" },
-          attributes: ["givenName"],
+          attributes: ["givenName", "id", "surName"],
         },
         {
           model: roles,
@@ -40,7 +41,17 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
         .json({ error: "No active team members found for the given teamId" });
     }
 
-    res.status(200).json({ activeTeamMembers });
+    const formattedActiveTeamMembers = activeTeamMembers.map((member: any) => ({
+      id: member.id,
+      userGivenName:
+        member.userInformation.givenName + " " + member.userInformation.surName,
+      userId: member.userInformation.id,
+      roleName: member.role.roleName,
+    }));
+
+    console.log(formattedActiveTeamMembers);
+
+    res.status(200).json({ activeTeamMembers: formattedActiveTeamMembers });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
