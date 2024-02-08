@@ -38,7 +38,7 @@ const postUserInformation = async (
         department: graphApiResponse.data.department || "front-end",
         employeeId: graphApiResponse.data.id,
         givenName: graphApiResponse.data.givenName,
-        surName: graphApiResponse.data.surName,
+        surName: graphApiResponse.data.surname,
         userPrincipalName: graphApiResponse.data.userPrincipalName,
         email: graphApiResponse.data.userPrincipalName,
         jobTitle: graphApiResponse.data.jobTitle || "developer",
