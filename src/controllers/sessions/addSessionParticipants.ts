@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import SessionParticipant from "../../models/sessionParticipants";
-
 /**
  * Adds participants to a session.
  *
@@ -14,34 +13,36 @@ const addSessionParticipants = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const participantData: {
-      sessionId: number;
-      userId: string;
-      roleId: number;
-    }[] = req.body;
+    const { sessionId, participants } = req.body;
 
-    if (!participantData || participantData.length === 0) {
-      return res.status(400).json({ message: "No participant data provided" });
+    if (!sessionId || !participants || participants.length === 0) {
+      return res.status(400).json({ message: "Invalid request body" });
     }
 
     const insertedParticipants = [];
 
-    for (const data of participantData) {
+    for (const participant of participants) {
+      const { userId, roleId } = participant;
+
       const existingParticipant = await SessionParticipant.findOne({
         where: {
-          sessionId: data.sessionId,
-          userId: data.userId,
-          roleId: data.roleId,
+          sessionId: sessionId,
+          userId: userId,
+          roleId: roleId,
         },
       });
 
-      if (existingParticipant)
-        return res.status(404).json({ message: "User already in the session" });
-
-      if (!existingParticipant) {
-        const participant = await SessionParticipant.create(data);
-        insertedParticipants.push(participant);
+      if (existingParticipant) {
+        return res.status(400).json({ message: "User already in the session" });
       }
+
+      const newParticipant = await SessionParticipant.create({
+        sessionId: sessionId,
+        userId: userId,
+        roleId: roleId,
+      });
+
+      insertedParticipants.push(newParticipant);
     }
 
     return res.status(201).json({
