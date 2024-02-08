@@ -6,7 +6,7 @@ const getUserStoryCountsBySession = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { sessionId } = req.body;
+    const { sessionId } = req.query;
 
     const userStoryMappings = await userStorySessionMapping.findAll({
       where: { sessionId },
