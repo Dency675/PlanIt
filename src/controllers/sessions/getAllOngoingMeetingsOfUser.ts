@@ -12,7 +12,7 @@ import Session from "../../models/sessions";
 
 const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     if (!userId) {
       return res
