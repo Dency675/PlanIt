@@ -10,6 +10,7 @@ import decodeTokens from "../middleware/decodeTokens";
 import { searchUserFilter } from "../controllers/userInformation/searchUserFilter";
 import getAllUsers from "../controllers/userInformation/getAllUser";
 import updateUserRoleToProjectManager from "../controllers/employeeRoleMapping/updateEmployeeRoleToProjectManager";
+import getUserInformationById from "../controllers/userInformation/getUserInformationById";
 
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post(
@@ -22,12 +23,22 @@ userInformationRouter.post(
 userInformationRouter.get("/getUser", async (req: Request, res: Response) => {
   getUser(req, res);
 });
+
+userInformationRouter.get(
+  "/getUserInformationById",
+  async (req: Request, res: Response) => {
+    getUserInformationById(req, res);
+  }
+);
 userInformationRouter.put("/editUser", async (req: Request, res: Response) => {
   putUserInformation(req, res);
 });
-userInformationRouter.get("/getAllUsers", async (req: Request, res: Response) => {
-  getAllUsers(req, res);
-});
+userInformationRouter.get(
+  "/getAllUsers",
+  async (req: Request, res: Response) => {
+    getAllUsers(req, res);
+  }
+);
 
 userInformationRouter.post(
   "/addEmployeeRole",
@@ -64,10 +75,11 @@ userInformationRouter.post(
   }
 );
 
-userInformationRouter.put('/updateUserRoleToProjectManager', async (req: Request, res: Response) => {
-  updateUserRoleToProjectManager(req,res);
-});
-
-
+userInformationRouter.put(
+  "/updateUserRoleToProjectManager",
+  async (req: Request, res: Response) => {
+    updateUserRoleToProjectManager(req, res);
+  }
+);
 
 export default userInformationRouter;
