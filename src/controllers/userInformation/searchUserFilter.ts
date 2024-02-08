@@ -10,8 +10,8 @@ export const searchUserFilter = async (
   try {
     const { offset, search } = req.query;
     // let { userList } = req.body;
-    let { teamId } = req.body;
-    
+    let { teamId, userList } = req.body;
+
     // Trim the search query if it's a string
     let searchString = search;
     if (typeof searchString === "string") {
@@ -26,18 +26,28 @@ export const searchUserFilter = async (
     // Query team members based on team_id
     const teamMembers = await teamMemberInformation.findAll({
       where: { team_id: teamId },
-      attributes: ['user_id'],
+      attributes: ["user_id"],
     });
-  
+
     // Extract user IDs from team members
-    const userIds: string[] = teamMembers.map((member) => member.getDataValue("user_id"));
+    const userIds: string[] = teamMembers.map((member) =>
+      member.getDataValue("user_id")
+    );
 
     // Query users not in the team and retrieve their emails
     const excludedUsers = await userInformation.findAll({
       where: { id: { [Op.in]: userIds } },
-      attributes: ['email'],
+      attributes: ["email"],
     });
-    const excludedEmails: string[] = excludedUsers.map((member) => member.getDataValue("email"));
+    const excludedEmailss: string[] = excludedUsers.map((member) =>
+      member.getDataValue("email")
+    );
+
+    const excludedEmailsss = userList.map((user: any) => user.email);
+
+    const excludedEmails = [...excludedEmailss, ...excludedEmailsss];
+
+    console.log(excludedEmails);
 
     // Search for users by name excluding users in the userList
     const userResults = await userInformation.findAll({
