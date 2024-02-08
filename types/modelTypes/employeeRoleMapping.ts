@@ -1,7 +1,6 @@
 import { Model } from "sequelize";
 
 class EmployeeRoleMapping extends Model {
-  [x: string]: any;
   public id!: number;
   public userId!: string;
   public roleId!: number;

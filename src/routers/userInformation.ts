@@ -9,6 +9,7 @@ import { searchUser } from "../controllers/userInformation/searchUser";
 import decodeTokens from "../middleware/decodeTokens";
 import { searchUserFilter } from "../controllers/userInformation/searchUserFilter";
 import getAllUsers from "../controllers/userInformation/getAllUser";
+import updateUserRoleToProjectManager from "../controllers/employeeRoleMapping/updateEmployeeRoleToProjectManager";
 
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post(
@@ -62,5 +63,11 @@ userInformationRouter.post(
     searchUserFilter(req, res);
   }
 );
+
+userInformationRouter.put('/updateUserRoleToProjectManager', async (req: Request, res: Response) => {
+  updateUserRoleToProjectManager(req,res);
+});
+
+
 
 export default userInformationRouter;
