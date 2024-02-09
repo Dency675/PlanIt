@@ -3,6 +3,7 @@ import addTeamMemberInformation from "../controllers/teamMemberInformation/postT
 import getActiveTeamMembers from "../controllers/teamMemberInformation/getTeamMembersInformation";
 import removeTeamMember from "../controllers/teamMemberInformation/removeTeamMemberinformation";
 import { uploadTeamMembers } from "../controllers/teamMemberInformation/uploadTeamMember";
+import assignNewScrumMaster from "../controllers/roles/assignNewScrumMaster";
 import multer from "multer";
 
 const upload = multer({ dest: "uploads/" });
@@ -32,6 +33,13 @@ teamMemberInformationRouter.post(
   upload.single("csvFile"),
   async (req: Request, res: Response) => {
     uploadTeamMembers(req, res);
+  }
+);
+
+teamMemberInformationRouter.put(
+  "/assignNewScrumMaster",
+  async (req: Request, res: Response) => {
+    assignNewScrumMaster(req, res);
   }
 );
 
