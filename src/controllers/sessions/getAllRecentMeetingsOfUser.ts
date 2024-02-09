@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import TeamMemberInformation from "../../models/teamMemberInformation";
 import Session from "../../models/sessions";
 import { Op } from "sequelize";
+import { off } from "process";
 
 /**
  * Retrieves all recent meetings of a user based on their user ID, with optional sorting, date filters, and pagination.
@@ -13,8 +14,15 @@ import { Op } from "sequelize";
 
 const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
   try {
-    const { userId, sortBy, sortOrder, fromDate, toDate, page, pageSize } =
-      req.body;
+    const { userId } = req.query;
+    const {
+      sortBy,
+      sortOrder,
+      fromDate,
+      toDate,
+      limit = 5,
+      offset = 0,
+    } = req.body;
 
     if (!userId) {
       return res
@@ -31,16 +39,17 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
     }
 
     const teamId = teamMemberInfo.teamId;
+    console.log(limit);
 
     const queryOptions: any = {
-      attributes: ["sessionTitle", "createDateTime"],
+      attributes: ["id", "sessionTitle", "createDateTime"],
       where: {
         teamId: teamId,
         status: "completed",
       },
       order: [],
-      offset: 0,
-      limit: 10,
+      offset: offset,
+      limit: limit,
     };
 
     // Sorting
@@ -66,12 +75,6 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
       queryOptions.where.createDateTime = {
         [Op.between]: [fromDate, toDate],
       };
-    }
-
-    // Pagination
-    if (page && pageSize) {
-      queryOptions.offset = (page - 1) * pageSize;
-      queryOptions.limit = pageSize;
     }
 
     const completedSessions = await Session.findAll(queryOptions);
