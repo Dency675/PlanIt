@@ -12,7 +12,7 @@ import Session from "../../models/sessions";
 
 const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     if (!userId) {
       return res
@@ -25,13 +25,15 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
     });
 
     if (!teamMemberInfo) {
-      return res.status(404).json({ error: "User not found" });
+      return res
+        .status(404)
+        .json({ error: "User not found", ongoingMeetings: [] });
     }
 
     const teamId = teamMemberInfo.teamId;
 
     const ongoingMeetings = await Session.findAll({
-      attributes: ["sessionTitle", "createDateTime"],
+      attributes: ["id", "sessionTitle", "createDateTime"],
       where: {
         teamId,
         status: "active",
