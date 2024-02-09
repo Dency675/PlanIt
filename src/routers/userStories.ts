@@ -6,6 +6,7 @@ import getUserStoryById from "../controllers/userStories/getUserStoryById";
 import updateUserStory from "../controllers/userStories/updateUserStory";
 import { uploadUserStories } from "../controllers/userStories/uploadUserStories";
 import multer from "multer";
+import getUserStoryDetailBySessionId from "../controllers/userStories/getUserStoryDetailBySessionId";
 
 const upload = multer({ dest: "uploads/" });
 const userStoriesRouter = express.Router();
@@ -43,6 +44,13 @@ userStoriesRouter.post(
   upload.single("csvFile"),
   async (req: Request, res: Response) => {
     uploadUserStories(req, res);
+  }
+);
+
+userStoriesRouter.get(
+  "/getUserStoryDetailBySessionId",
+  async (req: Request, res: Response) => {
+    getUserStoryDetailBySessionId(req, res);
   }
 );
 
