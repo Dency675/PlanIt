@@ -3,6 +3,7 @@ import participantScores from "../../types/modelTypes/participantScores";
 import sequelize from "../config/sequelize";
 import teamInformation from "./teamInformation";
 import userStorySessionMapping from "./userStorySessionMapping";
+import teamMemberInformation from "./teamMemberInformation";
 
 participantScores.init(
   {
@@ -34,17 +35,18 @@ participantScores.init(
     underscored: true,
   }
 );
-teamInformation.hasMany(participantScores, {
+teamMemberInformation.hasMany(participantScores, {
   foreignKey: "teamMemberId",
 });
 
-participantScores.belongsTo(teamInformation, {
+participantScores.belongsTo(teamMemberInformation, {
   foreignKey: "teamMemberId",
   targetKey: "id",
 });
 
 userStorySessionMapping.hasMany(participantScores, {
   foreignKey: "userStorySessionMappingId",
+  as: "participantScores",
 });
 participantScores.belongsTo(userStorySessionMapping, {
   foreignKey: "userStorySessionMappingId",

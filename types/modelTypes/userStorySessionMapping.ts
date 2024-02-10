@@ -1,6 +1,7 @@
 import { Model } from "sequelize";
 
 class userStorySessionMapping extends Model {
+  [x: string]: any;
   public id!: number;
   public userStoryId!: number;
   public sessionId!: number;
