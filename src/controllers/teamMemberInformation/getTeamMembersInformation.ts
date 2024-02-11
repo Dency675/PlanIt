@@ -43,7 +43,7 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
 
     const formattedActiveTeamMembers = activeTeamMembers.map((member: any) => ({
       id: member.id,
-      userGivenName:
+      givenName:
         member.userInformation.givenName + " " + member.userInformation.surName,
       userId: member.userInformation.id,
       roleName: member.role.roleName,

@@ -42,7 +42,13 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
     console.log(limit);
 
     const queryOptions: any = {
-      attributes: ["id", "sessionTitle", "createDateTime"],
+      attributes: [
+        "id",
+        "sessionTitle",
+        "createDateTime",
+        "scrumMasterId",
+        "status",
+      ],
       where: {
         teamId: teamId,
         status: "completed",
