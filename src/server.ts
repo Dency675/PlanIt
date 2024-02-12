@@ -8,8 +8,23 @@ import sequelize from "./config/sequelize";
 import { Sequelize, DataTypes, Model } from "sequelize";
 import chooseRoutes from "./router";
 import getSessionById from "./controllers/sessions/getSessionById";
+import { sendEmailNotification } from "./controllers/email/send_mail";
+interface User {
+  name: string;
+  email: string;
+  teamName: string;
+  storyName: string;
+}
 
-// // const port = 3000 || process.env.port;
+let users: User[] = [
+  {
+    name: "Jack",
+    email: "geevarghese.varghese@experionglobal.com",
+    teamName: "Agile Architects",
+    storyName: "Stripe API"
+  },
+
+];// // const port = 3000 || process.env.port;
 
 const app = express();
 const server = http.createServer(app);
@@ -36,6 +51,13 @@ sequelizeSync();
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+sendEmailNotification("newScrumMaster",users)
+sendEmailNotification("nolongerScrumMaster",users)
+sendEmailNotification("projectManagerAdded",users)
+sendEmailNotification("projectManagerDeleted",users)
+sendEmailNotification("scheduledPlanningSession",users)
+sendEmailNotification("teamMemberAdded",users)
+sendEmailNotification("teamMemberDeleted",users)
 
 chooseRoutes(app);
 
