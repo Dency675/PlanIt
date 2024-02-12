@@ -20,7 +20,13 @@ const getAllRecentMeetings = async (req: Request, res: Response) => {
     }
 
     const completedSessions = await Session.findAll({
-      attributes: ["id", "sessionTitle", "createDateTime"],
+      attributes: [
+        "id",
+        "sessionTitle",
+        "createDateTime",
+        "scrumMasterId",
+        "status",
+      ],
       where: {
         team_id: teamId,
         status: "completed",

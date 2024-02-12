@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import TeamMemberInformation from "../../models/teamMemberInformation";
 import Session from "../../models/sessions";
+import { Op } from "sequelize";
 
 /**
  * Retrieves all ongoing meetings of a user based on their user ID.
@@ -33,10 +34,16 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
     const teamId = teamMemberInfo.teamId;
 
     const ongoingMeetings = await Session.findAll({
-      attributes: ["id", "sessionTitle", "createDateTime"],
+      attributes: [
+        "id",
+        "sessionTitle",
+        "createDateTime",
+        "scrumMasterId",
+        "status",
+      ],
       where: {
         teamId,
-        status: "active",
+        status: { [Op.or]: ["active", "not started"] },
       },
     });
 
