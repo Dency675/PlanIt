@@ -8,12 +8,21 @@ export const searchUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    let { search } = req.query;
+    let { offset, search } = req.query;
 
     if (typeof search === "string") {
       search = search.trim();
     }
 
+    // if (!search) {
+    //   res.status(422).json({error: "Missing Search parameter "});
+    //   return;
+    // }
+
+    let skip: number = 0;
+    if (offset) {
+      skip = parseInt(offset as string);
+    }
 
     // Search for users by name
     const userResults = await user_information.findAll({
@@ -23,6 +32,8 @@ export const searchUser = async (
           { email: { [Op.like]: `%${search}%` } },
         ],
       },
+      limit: 10,
+      offset: skip,
     });
 
     console.log(userResults);
