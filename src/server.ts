@@ -168,6 +168,24 @@ io.on("connection", (socket: Socket) => {
     io.to(sessionId).emit("votingStarted", sessionId, isStartButtonStarted);
   });
 
+  socket.on("revealClicked", async (sessionId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("showResult", sessionId);
+  });
+
+  socket.on("startButtonClicked", async (sessionId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("showParticipants", sessionId);
+  });
+
+  socket.on("userVoted", async (sessionId, teamMemberId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("userVotedAdded", sessionId, teamMemberId);
+  });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });

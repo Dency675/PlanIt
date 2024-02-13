@@ -4,8 +4,6 @@ import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import participantScores from "../../models/participantScores";
-import Session from "../../models/sessions";
-import { Sequelize } from "sequelize";
 
 /**
  * Retrieves developers participating in a session based on the provided session ID.
@@ -31,16 +29,8 @@ const getDevelopersInSession = async (
         sessionId: sessionId,
         roleId: 5,
         isJoined: true,
-        // "$Session.teamid$": Sequelize.col("user.teamMember.teamId"),
       },
       include: [
-        // {
-        //   model: Session,
-        //   attributes: ["teamId"],
-        //   // where: {
-        //   //   teamid: Sequelize.col("teamMember.teamId"),
-        //   // },
-        // },
         {
           model: UserInformation,
           attributes: ["givenName", "email", "id"],
@@ -51,13 +41,6 @@ const getDevelopersInSession = async (
               attributes: ["id", "teamId"],
               as: "teamMember",
               include: [
-                {
-                  model: Session,
-                  attributes: [],
-                  //   where: { teamid: Sequelize.col("teamMember.teamId") },
-                  as: "sessionTeam",
-                },
-
                 {
                   model: participantScores,
                   attributes: ["id", "storyPoint"],
