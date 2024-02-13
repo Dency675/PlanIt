@@ -6,6 +6,7 @@ import { uploadTeamMembers } from "../controllers/teamMemberInformation/uploadTe
 import assignNewScrumMaster from "../controllers/roles/assignNewScrumMaster";
 import multer from "multer";
 import addMultipleMembers from "../controllers/teamMemberInformation/addMultipleMembers";
+import getTeamMemberInformationByUserId from "../controllers/teamMemberInformation/getTeamMemberInformationByUserId";
 
 const upload = multer({ dest: "uploads/" });
 
@@ -28,6 +29,12 @@ teamMemberInformationRouter.get(
   "/getMembers",
   async (req: Request, res: Response) => {
     getActiveTeamMembers(req, res);
+  }
+);
+teamMemberInformationRouter.get(
+  "/getTeamMemberInformationByUserId",
+  async (req: Request, res: Response) => {
+    getTeamMemberInformationByUserId(req, res);
   }
 );
 teamMemberInformationRouter.put(

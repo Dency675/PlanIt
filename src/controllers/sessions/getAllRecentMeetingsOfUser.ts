@@ -49,6 +49,7 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
         "scrumMasterId",
         "status",
       ],
+
       where: {
         teamId: teamId,
         status: "completed",

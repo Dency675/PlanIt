@@ -8,22 +8,37 @@ import getTeamInformationByUserId from "../controllers/teamInformations/getTeamI
 
 const teamInformationRouter = express.Router();
 
-teamInformationRouter.post("/addTeamInformation", async(req: Request, res: Response) => {
-    addTeamInformation(req,res);
-});
- 
-teamInformationRouter.patch("/editTeamInformation", async(req: Request, res: Response) => {
-    editTeamInformation(req,res);
-});
+teamInformationRouter.post(
+  "/addTeamInformation",
+  async (req: Request, res: Response) => {
+    addTeamInformation(req, res);
+  }
+);
 
-teamInformationRouter.get("/getAllTeamInformation", async(req: Request, res: Response) => {
-    getAllTeamInformation(req,res);
-});
-teamInformationRouter.get("/getATeamInformation", async(req: Request, res: Response) => {
-    getATeamInformation(req,res);
-});
-teamInformationRouter.get("/getTeamInformationByUserId", async(req: Request, res: Response) => {
-    getTeamInformationByUserId(req,res);
-});
+teamInformationRouter.patch(
+  "/editTeamInformation",
+  async (req: Request, res: Response) => {
+    editTeamInformation(req, res);
+  }
+);
+
+teamInformationRouter.get(
+  "/getAllTeamInformation",
+  async (req: Request, res: Response) => {
+    getAllTeamInformation(req, res);
+  }
+);
+teamInformationRouter.get(
+  "/getATeamInformation",
+  async (req: Request, res: Response) => {
+    getATeamInformation(req, res);
+  }
+);
+teamInformationRouter.get(
+  "/getTeamInformationByUserId",
+  async (req: Request, res: Response) => {
+    getTeamInformationByUserId(req, res);
+  }
+);
 
 export default teamInformationRouter;

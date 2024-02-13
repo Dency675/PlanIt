@@ -4,6 +4,7 @@ import axios from "axios";
 import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import roles from "../../models/roles";
 import { where } from "sequelize";
+import addEmployeeRole from "../employeeRoleMapping/addEmployeeRole";
 
 /**
  * Handles the creation of a new user Record in the user information table.
@@ -43,6 +44,18 @@ const postUserInformation = async (
         email: graphApiResponse.data.userPrincipalName,
         jobTitle: graphApiResponse.data.jobTitle || "developer",
       });
+
+      const req: any = {
+        body: { userId: userInformationAdd.id, roleId: 5 },
+      };
+
+      const res: any = {
+        json: (data: any) => {
+          console.log("user role added", data);
+        },
+      };
+
+      await addEmployeeRole(req, res);
 
       return res.status(200).json({
         message: "User information inserted successfully",

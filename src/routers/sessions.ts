@@ -11,6 +11,7 @@ import getDevelopersInSession from "../controllers/sessions/getDevelopersInSessi
 import getAllRecentMeetingsOfUser from "../controllers/sessions/getAllRecentMeetingsOfUser";
 import getAllOngoingMeetingsOfUser from "../controllers/sessions/getAllOngoingMeetingsOfUser";
 import multer from "multer";
+import editSessionParticipants from "../controllers/sessions/editSessionParticipants";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -52,5 +53,9 @@ router.get("/getParticipantsInSession", (req: Request, res: Response) => {
 });
 router.get("/getDevelopersInSession", (req: Request, res: Response) => {
   getDevelopersInSession(req, res);
+});
+
+router.put("/editSessionParticipants", (req: Request, res: Response) => {
+  editSessionParticipants(req, res);
 });
 export default router;

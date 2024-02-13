@@ -55,7 +55,10 @@ teamMemberInformation.belongsTo(teamInformation, {
   targetKey: "id",
 });
 
-userInformation.hasMany(teamMemberInformation, { foreignKey: "userId" });
+userInformation.hasMany(teamMemberInformation, {
+  foreignKey: "userId",
+  as: "teamMember",
+});
 teamMemberInformation.belongsTo(userInformation, {
   foreignKey: "userId",
   targetKey: "id",
