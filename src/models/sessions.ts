@@ -70,9 +70,9 @@ Session.init(
       },
     },
     status: {
-      type: DataTypes.ENUM("active", "completed"),
+      type: DataTypes.ENUM("not started", "active", "completed"),
       allowNull: false,
-      defaultValue: "active",
+      defaultValue: "not started",
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -94,7 +94,7 @@ Session.init(
   }
 );
 
-TeamInformation.hasMany(Session, { foreignKey: "teamId" });
+TeamInformation.hasMany(Session, { foreignKey: "teamId", as: "sessionTeam" });
 Session.belongsTo(TeamInformation, {
   foreignKey: "teamId",
   targetKey: "id",

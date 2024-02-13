@@ -7,6 +7,7 @@ import { sequelizeSync } from "./services/sequelize";
 import sequelize from "./config/sequelize";
 import { Sequelize, DataTypes, Model } from "sequelize";
 import chooseRoutes from "./router";
+import getSessionById from "./controllers/sessions/getSessionById";
 
 // // const port = 3000 || process.env.port;
 
@@ -49,15 +50,79 @@ io.on("connection", (socket: Socket) => {
     try {
       socket.join(sessionId);
 
-      io.to(sessionId).emit("roomCreated", {});
+      // io.to(sessionId).emit("roomCreated", {});
+      io.emit("roomCreated", sessionId);
       console.log(`Room created`);
     } catch (error) {
       console.error("Error creating room:", error);
     }
   });
 
-  socket.on("joinRoom", (roomId: string, creator: string) => {
-    socket.join(roomId);
+  // socket.join(sessionId);
+  socket.on("userStoryMappingId", (userStoryMappingId, sessionId) => {
+    console.log(userStoryMappingId);
+    console.log(typeof userStoryMappingId);
+    console.log(sessionId);
+
+    // io.to(sessionId).emit("userStoryMappingIdDeveloper", {
+    //   userStoryMappingId,
+    // });
+
+    // io.to(sessionId).emit("userStoryMappingIdDeveloper", {
+    //   userStoryMappingId,
+    //   sessionId,
+    // });
+
+    // io.to(roomId).emit("roomCreated", { roomId, currentTime, creator });
+
+    // io.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
+    io.emit("userStoryMappingIdDeveloper", { userStoryMappingId, sessionId });
+    // socket.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
+  });
+
+  socket.on("joinRoom", async (sessionId, userId) => {
+    // socket.to(sessionId).emit("userJoined", { sessionId });
+    try {
+      // const req: any = {
+      //   query: { sessionId },
+      // };
+
+      // const res: any = {
+      //   json: (data: any) => {
+      //     console.log("join room details", data);
+      //   },
+      // };
+
+      // await getSessionById(req, res);
+
+      socket.join(sessionId);
+      io.to(sessionId).emit("userJoined", { sessionId });
+
+      // socket.to(sessionId).emit("userJoined", { sessionId });
+
+      console.log(`User ${userId} joined room ${sessionId}`);
+    } catch (error) {
+      console.error("Error joining room:", error);
+    }
+  });
+  socket.on("timerSet", async (isTimerRunning, sessionId, currentTime) => {
+    console.log("timerSet");
+    console.log(isTimerRunning);
+    console.log(sessionId);
+    console.log(currentTime);
+    socket.join(sessionId);
+    io.to(sessionId).emit("timerShow", {
+      isTimerRunning,
+      sessionId,
+      currentTime,
+    });
+  });
+
+  socket.on("startVoting", async (sessionId, isStartButtonStarted) => {
+    console.log("startVoting", sessionId, isStartButtonStarted);
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("votingStarted", sessionId, isStartButtonStarted);
   });
 
   socket.on("disconnect", () => {

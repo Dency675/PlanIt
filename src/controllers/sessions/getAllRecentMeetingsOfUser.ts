@@ -42,7 +42,6 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
     console.log(limit);
 
     const queryOptions: any = {
-<<<<<<< HEAD
       attributes: [
         "id",
         "sessionTitle",
@@ -50,9 +49,7 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
         "scrumMasterId",
         "status",
       ],
-=======
-      attributes: ["id", "sessionTitle", "createDateTime", "scrumMasterId"],
->>>>>>> 554662f (implemented socket hand shaking)
+
       where: {
         teamId: teamId,
         status: "completed",

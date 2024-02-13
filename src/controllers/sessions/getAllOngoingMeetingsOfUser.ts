@@ -21,17 +21,17 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
         .json({ error: "user id is required in the request body" });
     }
 
-    const teamMemberInfo = await TeamMemberInformation.findOne({
+    const teamMemberInfo = await TeamMemberInformation.findAll({
       where: { userId: userId },
     });
 
-    if (!teamMemberInfo) {
+    if (!teamMemberInfo || teamMemberInfo.length === 0) {
       return res
         .status(404)
         .json({ error: "User not found", ongoingMeetings: [] });
     }
 
-    const teamId = teamMemberInfo.teamId;
+    const teamIds = teamMemberInfo.map((member) => member.teamId);
 
     const ongoingMeetings = await Session.findAll({
       attributes: [
@@ -42,7 +42,9 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
         "status",
       ],
       where: {
-        teamId,
+        teamId: {
+          [Op.in]: teamIds,
+        },
         status: { [Op.or]: ["active", "not started"] },
       },
     });

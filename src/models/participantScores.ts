@@ -37,6 +37,7 @@ participantScores.init(
 );
 teamMemberInformation.hasMany(participantScores, {
   foreignKey: "teamMemberId",
+  as: "sessionParticipant",
 });
 
 participantScores.belongsTo(teamMemberInformation, {

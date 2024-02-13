@@ -30,7 +30,7 @@ const editSessions = async (req: Request, res: Response): Promise<Response> => {
 
     return res
       .status(200)
-      .json({ message: "Session updated successfully", data: session });
+      .json({ message: "Session updated successfully", data: session.status });
   } catch (error) {
     console.error("Error updating session:", error);
     return res.status(500).json({ message: "Internal Server Error" });

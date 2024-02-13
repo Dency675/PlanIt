@@ -14,8 +14,10 @@ const addParticipantScores = async (
 ): Promise<void> => {
   try {
     const { teamMemberId, userStorySessionMappingId, storyPoint } = req.body;
-
-    if (!teamMemberId || !userStorySessionMappingId || !storyPoint) {
+    console.log(teamMemberId);
+    console.log(userStorySessionMappingId);
+    console.log(storyPoint);
+    if (teamMemberId && userStorySessionMappingId && storyPoint == undefined) {
       res.status(400).json({ error: "Bad Request - Missing required fields" });
       return;
     }
