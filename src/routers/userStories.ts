@@ -7,6 +7,8 @@ import updateUserStory from "../controllers/userStories/updateUserStory";
 import { uploadUserStories } from "../controllers/userStories/uploadUserStories";
 import multer from "multer";
 import getUserStoryDetailBySessionId from "../controllers/userStories/getUserStoryDetailBySessionId";
+import getS3Data from "../controllers/userStories/getUserStoryFromS3";
+import addUserStoriesFromS3 from "../controllers/userStories/addUserStoriesFromS3";
 
 const upload = multer({ dest: "uploads/" });
 const userStoriesRouter = express.Router();
@@ -51,6 +53,17 @@ userStoriesRouter.get(
   "/getUserStoryDetailBySessionId",
   async (req: Request, res: Response) => {
     getUserStoryDetailBySessionId(req, res);
+  }
+);
+
+userStoriesRouter.get("/getS3Data", async (req: Request, res: Response) => {
+  getS3Data(req, res);
+});
+
+userStoriesRouter.post(
+  "/addUserStoriesFromS3",
+  async (req: Request, res: Response) => {
+    addUserStoriesFromS3(req, res);
   }
 );
 

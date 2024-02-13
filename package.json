@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1551.0",
     "@types/cors": "^2.8.17",
+    "aws-sdk": "^2.1555.0",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
@@ -33,5 +33,6 @@
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0"
-  }
+  },
+  "keywords": []
 }

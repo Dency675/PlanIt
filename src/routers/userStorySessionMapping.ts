@@ -4,6 +4,7 @@ import addUserStorySessionMapping from "../controllers/userStorySessionMapping/a
 import getUserStoryCountsBySession from "../controllers/userStorySessionMapping/getUserStoryCount";
 import getAllUserStoriesBySessionId from "../controllers/userStories/getAllUserStoriesBySessionId";
 import getStoryPointByParticipants from "../controllers/userStorySessionMapping/getStoryPointByParticipants";
+import addUserStoriesAndSessionMapping from "../controllers/userStorySessionMapping/addUserStoriesAndSessionMapping";
 
 const userStorySesssionMappingRouter = express.Router();
 
@@ -31,6 +32,13 @@ userStorySesssionMappingRouter.get(
   "/getStoryPointByParticipants",
   async (req: Request, res: Response) => {
     getStoryPointByParticipants(req, res);
+  }
+);
+
+userStorySesssionMappingRouter.post(
+  "/addUserStoriesAndSessionMapping",
+  async (req: Request, res: Response) => {
+    addUserStoriesAndSessionMapping(req, res);
   }
 );
 
