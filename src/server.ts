@@ -51,13 +51,8 @@ sequelizeSync();
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
-sendEmailNotification("newScrumMaster",users)
-sendEmailNotification("nolongerScrumMaster",users)
-sendEmailNotification("projectManagerAdded",users)
-sendEmailNotification("projectManagerDeleted",users)
-sendEmailNotification("scheduledPlanningSession",users)
-sendEmailNotification("teamMemberAdded",users)
-sendEmailNotification("teamMemberDeleted",users)
+
+// sendEmailNotification("scheduledPlanningSession",users)
 
 chooseRoutes(app);
 

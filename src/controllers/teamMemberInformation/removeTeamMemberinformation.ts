@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import TeamMemberInformation from "../../models/teamMemberInformation";
+import userInformation from "../../models/userInformation";
+import teamInformation from "../../models/teamInformation";
+import { sendEmailNotification } from "../email/send_mail";
 
 /**
  * Handles the removal of Team member information.
@@ -30,6 +33,32 @@ const removeTeamMember = async (req: Request, res: Response): Promise<void> => {
       });
       return;
     }
+
+    const teamMemberInfo = await TeamMemberInformation.findOne({
+      where: { id: id },
+      include: [
+        {
+          model: userInformation,
+          attributes: ['givenName', 'email'],
+        },
+        {
+          model: teamInformation,
+          attributes: ['teamName'],
+        },
+      ],})
+
+      if (!teamMemberInfo) {
+        throw new Error('Team member information not found');
+      }
+  
+      // Extract and format user info from the result
+      const userInfo = [{
+        name: teamMemberInfo.userInformation.givenName,
+        email: teamMemberInfo.userInformation.email,
+        teamName: teamMemberInfo.teamInformation.teamName,
+      }];
+
+      sendEmailNotification("teamMemberDeleted",userInfo)
 
     res.status(200).json({
       message: "Team member removed successfully",

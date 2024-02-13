@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import userInformation from "../../models/userInformation";
+import teamInformation from "../../models/teamInformation";
+import { sendEmailNotification } from "../email/send_mail";
 
 /**
  * Handles the creation of multiple Team members.
@@ -46,7 +48,7 @@ const addMultipleMembers = async (
     const teamMembersData = userIds.map((userId: number) => ({
       userId,
       teamId,
-      roleId: "1",
+      roleId: "5",
       status: "active",
     }));
 
@@ -54,6 +56,31 @@ const addMultipleMembers = async (
     const newTeamMembers = await teamMemberInformation.bulkCreate(
       teamMembersData
     );
+
+    const teamMembers = await teamMemberInformation.findAll({
+      where: { userId: userIds },
+      include: [
+        {
+          model: userInformation,
+          attributes: ['givenName', 'email'],
+        },
+        {
+          model: teamInformation,
+          attributes: ['teamName'],
+        },
+      ],
+    });
+
+
+    // Map the retrieved information to the desired format
+    const users = teamMembers.map((teamMember) => ({
+      name: teamMember.userInformation.givenName,
+      email: teamMember.userInformation.email,
+      teamName: teamMember.teamInformation.teamName,
+    }));
+
+    sendEmailNotification("teamMemberAdded",users)
+
 
     res.status(201).json({
       message: "Team members inserted successfully",

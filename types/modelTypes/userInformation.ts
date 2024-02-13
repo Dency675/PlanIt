@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 
 class userInformation extends Model {
+  [x: string]: any;
   public id!: string;
   public employeeId!: string;
   public givenName!: string;
