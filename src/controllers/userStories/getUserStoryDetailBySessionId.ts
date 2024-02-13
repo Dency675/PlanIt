@@ -17,7 +17,7 @@ const getUserStoryDetailBySessionId = async (
 
     const userStoryDetails = await userStorySessionMapping.findAll({
       where: { sessionId },
-      attributes: ["userStoryId", "storyPointResult"],
+      attributes: ["userStoryId", "storyPointResult", "comment"],
       include: [
         {
           model: userStories,
