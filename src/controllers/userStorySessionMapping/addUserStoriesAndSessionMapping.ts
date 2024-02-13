@@ -1,7 +1,6 @@
-// addUserStoriesFromS3.ts
 import { Request, Response } from "express";
-import getS3Data from "../userStories/getUserStoryFromS3"; // Import the getS3Data function
-import userStories from "../../models/userStories"; // Import your userStories model
+import getS3Data from "../userStories/getUserStoryFromS3";
+import userStories from "../../models/userStories";
 import userStorySessionMapping from "../../models/userStorySessionMapping";
 
 /**
@@ -34,13 +33,10 @@ const addUserStoriesAndSessionMapping = async (
       return;
     }
 
-    // Fetch data from S3 using the getS3Data function
     const s3DataResponse = await getS3Data(req, res);
 
-    // Extract CSV data from the S3 response
     const userStoriesArray = s3DataResponse.data;
 
-    // Add data to the database
     const createdUserStories = await userStories.bulkCreate(
       userStoriesArray.map((userStory: any) => ({
         key,
@@ -48,12 +44,10 @@ const addUserStoriesAndSessionMapping = async (
       }))
     );
 
-    // Extract user story IDs from the inserted user stories
     const userStoryIds = createdUserStories.map(
       (userStory: any) => userStory.id
     );
 
-    // Map all user stories to the session
     const createdUserStorySessionMapping = await Promise.all(
       userStoryIds.map((userStoryId: any) =>
         userStorySessionMapping.create(
