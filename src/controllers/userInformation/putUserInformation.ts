@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import userInformation from "../../models/userInformation";
+import { sendEmailNotification } from "../email/send_mail";
 
 /**
  * Handles the updation of user information in user_information model
@@ -24,7 +25,14 @@ const putUserInformation = async (req: Request, res: Response): Promise<void> =>
     await user.update({
         employeeId, givenName, surName, email, department, jobTitle, joinDate, lastLoginTime, status 
     });
-
+    if (user.status === 'inactive') {
+    const userInfo = [{
+      name: user.givenName,
+      email: user.email,
+    }];
+  
+    sendEmailNotification("teamMemberDeleted",userInfo)
+  }
     res.status(200).json({
       message: "User information updated successfully",
       data: user.toJSON(),

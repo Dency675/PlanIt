@@ -1,6 +1,7 @@
 import { Model } from 'sequelize';
 
 class teamMemberInformation extends Model {
+    [x: string]: any;
     public id!: number;
     public userId!: string;
     public teamId!: number;
