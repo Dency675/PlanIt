@@ -9,6 +9,7 @@ import multer from "multer";
 import getUserStoryDetailBySessionId from "../controllers/userStories/getUserStoryDetailBySessionId";
 import getS3Data from "../controllers/userStories/getUserStoryFromS3";
 import addUserStoriesFromS3 from "../controllers/userStories/addUserStoriesFromS3";
+import getAllUserStoriesBySessionId from "../controllers/userStories/getAllUserStoriesBySessionId";
 
 const upload = multer({ dest: "uploads/" });
 const userStoriesRouter = express.Router();
@@ -53,6 +54,13 @@ userStoriesRouter.get(
   "/getUserStoryDetailBySessionId",
   async (req: Request, res: Response) => {
     getUserStoryDetailBySessionId(req, res);
+  }
+);
+
+userStoriesRouter.get(
+  "/getAllUserStoriesBySessionId",
+  async (req: Request, res: Response) => {
+    getAllUserStoriesBySessionId(req, res);
   }
 );
 

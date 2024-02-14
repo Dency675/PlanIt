@@ -18,7 +18,7 @@ const getAllUserStoriesBySessionId = async (
 
     // Query user story session mapping table to get user story IDs, round number, and story point result
     const userStoryMappings = await UserStorySessionMapping.findAll({
-      where: { sessionId: sessionId },
+      where: { sessionId: sessionId, storyPointResult: 0 },
       attributes: ["id", "userStoryId", "roundNumber", "storyPointResult"],
       include: [
         {
