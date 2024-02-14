@@ -26,14 +26,9 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
       where: { userId: userId },
     });
 
-    if (!teamMemberInfo || teamMemberInfo.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "User not found", ongoingMeetings: [] });
-    }
-
     const teamIds = teamMemberInfo.map((member) => member.teamId);
     console.log(teamMemberInfo);
+
     const sessionIds = await sessionParticipants.findAll({
       where: { userId: userId },
     });
@@ -48,8 +43,8 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
       ],
       where: {
         [Op.or]: [
-          { teamId: { [Op.in]: teamIds} }, // Check if teamId is in teamIds
-          { id: { [Op.in]: sessionIds.map(session=>session.sessionId) } }, // Check if id is in sessionIds
+          { teamId: { [Op.in]: teamIds } }, // Check if teamId is in teamIds
+          { id: { [Op.in]: sessionIds.map((session) => session.sessionId) } }, // Check if id is in sessionIds
         ],
         status: { [Op.or]: ["active", "not started"] },
       },

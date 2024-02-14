@@ -3,6 +3,7 @@ import TeamMemberInformation from "../../models/teamMemberInformation";
 import Session from "../../models/sessions";
 import { Op } from "sequelize";
 import { off } from "process";
+import sessionParticipants from "../../models/sessionParticipants";
 
 /**
  * Retrieves all recent meetings of a user based on their user ID, with optional sorting, date filters, and pagination.
@@ -30,16 +31,16 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
         .json({ error: "user id is required in the request body" });
     }
 
-    const teamMemberInfo = await TeamMemberInformation.findOne({
+    const teamMemberInfo = await TeamMemberInformation.findAll({
       where: { userId: userId },
     });
 
-    if (!teamMemberInfo) {
-      return res.status(404).json({ error: "User not found" });
-    }
+    const teamIds = teamMemberInfo.map((member) => member.teamId);
+    console.log(teamMemberInfo);
 
-    const teamId = teamMemberInfo.teamId;
-    console.log(limit);
+    const sessionIds = await sessionParticipants.findAll({
+      where: { userId: userId },
+    });
 
     const queryOptions: any = {
       attributes: [
@@ -51,7 +52,10 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
       ],
 
       where: {
-        teamId: teamId,
+        [Op.or]: [
+          { teamId: { [Op.in]: teamIds } }, // Check if teamId is in teamIds
+          { id: { [Op.in]: sessionIds.map((session) => session.sessionId) } }, // Check if id is in sessionIds
+        ],
         status: "completed",
       },
       order: [],
