@@ -3,9 +3,12 @@ import Session from "../../models/sessions";
 import AWS from "aws-sdk";
 import { Readable } from "stream";
 import { ManagedUpload } from "aws-sdk/lib/s3/managed_upload";
+
 interface SessionPostResponse {
   message: string;
   data: Session;
+  SessionId: number;
+  fileName: string;
 }
 /**
  * Adds a new session to the database.
@@ -73,6 +76,9 @@ const addSessions = async (
     };
 
     console.log("file is : ", req.file);
+    console.log("file is : ", req.file?.originalname);
+    let fileName = "";
+    if (req.file) fileName = req.file.originalname;
 
     const excelLink = await s3UploadAsync(params);
     const newSession = await Session.create({
@@ -89,9 +95,12 @@ const addSessions = async (
     const responseData: SessionPostResponse = {
       message: "Session created successfully",
       data: newSession,
+      SessionId: newSession.id,
+      fileName: fileName,
     };
 
-    return res.status(201).json(responseData);
+    console.log(responseData);
+    return res.status(201).json({ responseData });
   } catch (error) {
     console.error("Error creating session:", error);
     return res.status(500).json({ message: "Internal Server Error" });
