@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import TeamMemberInformation from "../../models/teamMemberInformation";
 import Session from "../../models/sessions";
 import { Op } from "sequelize";
+import sessionParticipants from "../../models/sessionParticipants";
 
 /**
  * Retrieves all ongoing meetings of a user based on their user ID.
@@ -32,6 +33,10 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
     }
 
     const teamIds = teamMemberInfo.map((member) => member.teamId);
+    console.log(teamMemberInfo);
+    const sessionIds = await sessionParticipants.findAll({
+      where: { userId: userId },
+    });
 
     const ongoingMeetings = await Session.findAll({
       attributes: [
@@ -42,9 +47,10 @@ const getAllOngoingMeetingsOfUser = async (req: Request, res: Response) => {
         "status",
       ],
       where: {
-        teamId: {
-          [Op.in]: teamIds,
-        },
+        [Op.or]: [
+          { teamId: { [Op.in]: teamIds} }, // Check if teamId is in teamIds
+          { id: { [Op.in]: sessionIds.map(session=>session.sessionId) } }, // Check if id is in sessionIds
+        ],
         status: { [Op.or]: ["active", "not started"] },
       },
     });
