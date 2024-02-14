@@ -22,16 +22,43 @@ const addParticipantScores = async (
       return;
     }
 
-    const data = await participantScores.create(
-      {
+    let data = await participantScores.findOne({
+      where: {
         teamMemberId,
         userStorySessionMappingId,
-        storyPoint,
       },
-      { raw: true }
-    );
+    });
 
-    res.status(201).json({ message: "Data inserted successfully", data });
+    if (data) {
+      await participantScores.update(
+        { storyPoint },
+        {
+          where: {
+            teamMemberId,
+            userStorySessionMappingId,
+          },
+        }
+      );
+
+      data = await participantScores.findOne({
+        where: {
+          teamMemberId,
+          userStorySessionMappingId,
+        },
+      });
+      res.status(200).json({ message: "Data modified successfully", data });
+    } else {
+      data = await participantScores.create(
+        {
+          teamMemberId,
+          userStorySessionMappingId,
+          storyPoint,
+        },
+        { raw: true }
+      );
+
+      res.status(201).json({ message: "Data inserted successfully", data });
+    }
   } catch (error: any) {
     console.error("Error adding participant scores:", error);
 

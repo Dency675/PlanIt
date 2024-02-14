@@ -24,10 +24,9 @@ let users: User[] = [
     name: "Jack",
     email: "geevarghese.varghese@experionglobal.com",
     teamName: "Agile Architects",
-    storyName: "Stripe API"
+    storyName: "Stripe API",
   },
-
-];// // const port = 3000 || process.env.port;
+]; // // const port = 3000 || process.env.port;
 
 const app = express();
 const server = http.createServer(app);
@@ -119,7 +118,14 @@ io.on("connection", (socket: Socket) => {
     // io.to(roomId).emit("roomCreated", { roomId, currentTime, creator });
 
     // io.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
-    io.emit("userStoryMappingIdDeveloper", { userStoryMappingId, sessionId });
+    // io.to(sessionId).emit("showResult", sessionId);
+    io.to(sessionId).emit("userStoryMappingIdDeveloper", {
+      userStoryMappingId,
+      sessionId,
+    });
+    io.to(sessionId).emit("selectedUserStoryMappingId", {
+      userStoryMappingId,
+    });
     // socket.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
   });
 
@@ -166,6 +172,25 @@ io.on("connection", (socket: Socket) => {
     socket.join(sessionId);
 
     io.to(sessionId).emit("votingStarted", sessionId, isStartButtonStarted);
+  });
+
+  socket.on("revealClicked", async (sessionId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("showResult", sessionId);
+  });
+
+  socket.on("startButtonClicked", async (sessionId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("showParticipants", sessionId);
+  });
+
+  socket.on("userVoted", async (sessionId, teamMemberId) => {
+    socket.join(sessionId);
+    console.log("userVoted", sessionId, teamMemberId);
+
+    io.to(sessionId).emit("userVotedAdded", sessionId, teamMemberId);
   });
 
   socket.on("disconnect", () => {

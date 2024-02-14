@@ -57,13 +57,15 @@ const postUserInformation = async (
 
       await addEmployeeRole(req, res);
 
-      return res.status(200).json({
-        message: "User information inserted successfully",
-        data: userInformationAdd.toJSON(),
-      });
+      // return res.status(200).json({
+      //   message: "User information inserted successfully",
+      //   data: userInformationAdd.toJSON(),
+      // });
     }
-
-    const userId = findUser?.id;
+    const findUsers = await userInformation.findOne({
+      where: { employeeId: employeeId },
+    });
+    const userId = findUsers?.id;
     const findUserRoles = await EmployeeRoleMapping.findAll({
       where: { userId: userId },
       attributes: ["roleId"],

@@ -33,10 +33,7 @@ const addEmployeeRole = async (req: Request, res: Response): Promise<void> => {
       roleId: roleId,
     });
 
-    res.status(201).json({
-      message: "Employee role added successfully",
-      data: employeeRole,
-    });
+    return;
   } catch (error) {
     console.error("Error adding employee role:", error);
     res.status(500).json({ error: "Internal Server Error" });
