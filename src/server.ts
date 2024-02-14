@@ -10,7 +10,7 @@ import chooseRoutes from "./router";
 import getSessionById from "./controllers/sessions/getSessionById";
 import { sendEmailNotification } from "./controllers/email/send_mail";
 import userInformation from "./models/userInformation";
-import SessionParticipants from "./models/sessionParticipants";
+import sessionParticipants from "./models/sessionParticipants";
 import sessions from "./models/sessions";
 interface User {
   name: string;
@@ -68,28 +68,28 @@ io.on("connection", (socket: Socket) => {
   socket.on("createRoom", async (sessionId: string) => {
     try {
       
-      // const participants = await SessionParticipants.findAll({
-      //   where: { sessionId: sessionId },
-      //   include: [{
-      //     model: userInformation,
-      //     attributes: ['givenName', 'email'],
-      //   }],
-      // });
+      const planningparticipants = await sessionParticipants.findAll({
+        where: { sessionId: sessionId },
+        attributes: [],
+        include: [{
+          model: userInformation,
+          as: "user",
+          attributes: ['givenName', 'email'],
+        }],
+      });
   
-      // // Find the session title
-      // const session = await sessions.findOne({
-      //   where: { id: sessionId },
-      //   attributes: ['sessionTitle'],
-      // });
+      // Find the session title
+      const session = await sessions.findOne({
+        where: { id: sessionId },
+        attributes: ['sessionTitle'],
+      });
 
-      // const participantsInfo = participants.map(participant => ({
-      //   given_name: participant.userInformation.givenName,
-      //   email: participant.userInformation.email,
-      //   session_title: session?.sessionTitle,
-      // }));
-      // console.log(participantsInfo);
-  
-      // sendEmailNotification("scheduledPlanningSession",users)
+      const participantsInfo = planningparticipants.map(participant => ({
+        name: participant.user.givenName,
+        email: participant.user.email,
+        storyName: session?.sessionTitle,
+    }));
+            sendEmailNotification("planningPokerStarted",participantsInfo)
       socket.join(sessionId);
 
       // io.to(sessionId).emit("roomCreated", {});
