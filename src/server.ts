@@ -54,8 +54,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-
-
 chooseRoutes(app);
 
 // app.listen(port, () => {
@@ -67,29 +65,30 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("createRoom", async (sessionId: string) => {
     try {
-      
       const planningparticipants = await sessionParticipants.findAll({
         where: { sessionId: sessionId },
         attributes: [],
-        include: [{
-          model: userInformation,
-          as: "user",
-          attributes: ['givenName', 'email'],
-        }],
+        include: [
+          {
+            model: userInformation,
+            as: "user",
+            attributes: ["givenName", "email"],
+          },
+        ],
       });
-  
+
       // Find the session title
       const session = await sessions.findOne({
         where: { id: sessionId },
-        attributes: ['sessionTitle'],
+        attributes: ["sessionTitle"],
       });
 
-      const participantsInfo = planningparticipants.map(participant => ({
+      const participantsInfo = planningparticipants.map((participant) => ({
         name: participant.user.givenName,
         email: participant.user.email,
         storyName: session?.sessionTitle,
-    }));
-            sendEmailNotification("planningPokerStarted",participantsInfo)
+      }));
+      sendEmailNotification("planningPokerStarted", participantsInfo);
       socket.join(sessionId);
 
       // io.to(sessionId).emit("roomCreated", {});
@@ -106,25 +105,9 @@ io.on("connection", (socket: Socket) => {
     console.log(typeof userStoryMappingId);
     console.log(sessionId);
 
-    // io.to(sessionId).emit("userStoryMappingIdDeveloper", {
-    //   userStoryMappingId,
-    // });
-
-    // io.to(sessionId).emit("userStoryMappingIdDeveloper", {
-    //   userStoryMappingId,
-    //   sessionId,
-    // });
-
-    // io.to(roomId).emit("roomCreated", { roomId, currentTime, creator });
-
-    // io.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
-    // io.to(sessionId).emit("showResult", sessionId);
     io.to(sessionId).emit("userStoryMappingIdDeveloper", {
       userStoryMappingId,
       sessionId,
-    });
-    io.to(sessionId).emit("selectedUserStoryMappingId", {
-      userStoryMappingId,
     });
     // socket.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
   });
@@ -174,10 +157,10 @@ io.on("connection", (socket: Socket) => {
     io.to(sessionId).emit("votingStarted", sessionId, isStartButtonStarted);
   });
 
-  socket.on("revealClicked", async (sessionId) => {
+  socket.on("revealClicked", async (sessionId, selectedUserStoryId) => {
     socket.join(sessionId);
 
-    io.to(sessionId).emit("showResult", sessionId);
+    io.to(sessionId).emit("showResult", sessionId, selectedUserStoryId);
   });
 
   socket.on("startButtonClicked", async (sessionId) => {
@@ -191,6 +174,17 @@ io.on("connection", (socket: Socket) => {
     console.log("userVoted", sessionId, teamMemberId);
 
     io.to(sessionId).emit("userVotedAdded", sessionId, teamMemberId);
+  });
+
+  socket.on("sessionParticipantsScore", async (sessionId, userData) => {
+    socket.join(sessionId);
+    console.log("sessionParticipantsScore", sessionId, userData);
+
+    io.to(sessionId).emit(
+      "currentSessionParticipantsScore",
+      sessionId,
+      userData
+    );
   });
 
   socket.on("disconnect", () => {
