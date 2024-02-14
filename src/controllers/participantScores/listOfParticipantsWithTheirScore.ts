@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import sessionParticipants from "../../models/sessionParticipants";
 import userInformation from "../../models/userInformation";
 import participantScores from "../../models/participantScores";
 import SessionParticipants from "../../models/sessionParticipants";
