@@ -33,7 +33,6 @@ try{
         }
 
         }catch(error){
-          console.log("Error in putEstimation",error);
           res.status(500).json({ message: "Internal Server Error" });
         }
 

@@ -22,7 +22,6 @@ const editSessionParticipants = async (
         .json({ message: "Session ID and user ID are required" });
     }
 
-    // Find the session participant by session ID and user ID
     const sessionParticipant = await SessionParticipants.findOne({
       where: { sessionId: sessionId, userId: userId },
     });
@@ -31,7 +30,6 @@ const editSessionParticipants = async (
       return res.status(404).json({ message: "Session participant not found" });
     }
 
-    // Update the isJoined field to true
     sessionParticipant.isJoined = true;
     await sessionParticipant.save();
 

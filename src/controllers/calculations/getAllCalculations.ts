@@ -22,7 +22,6 @@ export const getAllCalculations = async (
       res.status(500).json({ error: "Data Doesnt exist" });
     }
   } catch (error) {
-    console.log("Error in getEstimation", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

@@ -22,14 +22,12 @@ export const deleteEstimations = async (req: Request, res: Response): Promise<vo
       where: { id: id }
     });
 
-    // Checking if the deletion was successful
     if (deletedCount > 0) {
       res.status(201).json({ message: "Deleted successfully" });
     } else {
       res.status(500).json({ error: "Estimation not found" });
     }
   } catch(error){
-    console.log("Error in deleteEstimation",error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

@@ -13,7 +13,6 @@ import Estimations from '../../models/estimations';
 
 const uploadEstimations = async (req: Request, res: Response) => {
   try {
-    console.log(req.file)
     if (!req.file) {
       return res.status(422).json({ error: 'Invalid request, CSV file not provided' });
     }
@@ -54,8 +53,7 @@ const uploadEstimations = async (req: Request, res: Response) => {
           return res.status(500).json({ error: 'Internal server error' });
         }
         finally {
-          // Cleanup: Remove the uploaded file after processing
-          fs.unlinkSync(req.file?.path || ''); // Using optional chaining and nullish coalescing
+          fs.unlinkSync(req.file?.path || ''); 
         }
       });
   }  

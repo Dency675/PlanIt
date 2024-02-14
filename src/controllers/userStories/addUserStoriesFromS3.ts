@@ -1,7 +1,6 @@
-// addUserStoriesFromS3.ts
 import { Request, Response } from "express";
-import getS3Data from "./getUserStoryFromS3"; // Import the getS3Data function
-import userStories from "../../models/userStories"; // Import your userStories model
+import getS3Data from "./getUserStoryFromS3"; 
+import userStories from "../../models/userStories";
 
 /**
  * Express route handler to add user stories to the database from S3.
@@ -25,13 +24,10 @@ const addUserStoriesFromS3 = async (
       return;
     }
 
-    // Fetch data from S3 using the getS3Data function
     const s3DataResponse = await getS3Data(req, res);
 
-    // Extract CSV data from the S3 response
     const userStoriesArray = s3DataResponse.data;
 
-    // Add data to the database
     const createdUserStories = await userStories.bulkCreate(
       userStoriesArray.map((userStory: any) => ({
         key,

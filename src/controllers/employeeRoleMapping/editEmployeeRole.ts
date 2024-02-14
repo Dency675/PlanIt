@@ -3,7 +3,6 @@ import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 import { sendEmailNotification } from "../email/send_mail";
-import employeeRoleMapping from "../../models/employeeRoleMapping";
 
 /**
  * Edits the role of an employee by updating the employee role mapping.
@@ -36,7 +35,6 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
     const employeeRole = await EmployeeRoleMapping.findOne({
       where: { userId: userId, roleId: oldRoleId },
     });
-    console.log(employeeRole)
     if (!employeeRole) {
       res.status(404).json({ error: "Employee role mapping not found" });
       return;
@@ -56,7 +54,6 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
         throw new Error('Team member information not found');
       }
 
-      // Extract and format user info from the result
       const newProjectManagerInfo = [{
         name: newProjectManager.givenName,
         email: newProjectManager.email,

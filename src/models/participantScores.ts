@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import participantScores from "../../types/modelTypes/participantScores";
 import sequelize from "../config/sequelize";
-import teamInformation from "./teamInformation";
 import userStorySessionMapping from "./userStorySessionMapping";
 import teamMemberInformation from "./teamMemberInformation";
 

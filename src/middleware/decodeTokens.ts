@@ -1,6 +1,6 @@
-import { NextFunction, urlencoded } from "express";
+import { NextFunction } from "express";
 import { Request, Response } from "express";
-import jwt, { Jwt, JwtPayload, decode } from "jsonwebtoken";
+import jwt, { Jwt, JwtPayload } from "jsonwebtoken";
 
 const decodeTokens = async (
   req: Request,
@@ -16,8 +16,7 @@ const decodeTokens = async (
         .json({ error: "unauthorized - token not provided" });
     }
     const processedToken = token.split("Bearer ")[1];
-    console.log("processedToken");
-    console.log(processedToken);
+
     const decodedToken = jwt.decode(processedToken, { complete: true });
 
     if (decodedToken && ((decodedToken as Jwt)?.payload as JwtPayload).exp) {
@@ -26,10 +25,8 @@ const decodeTokens = async (
       const isTokenExpried = expriry && expriry < currentTimeStamp;
 
       if (isTokenExpried) {
-        console.log("Token has expired");
         throw new Error("Token Expired error");
       } else {
-        console.log("Token is valid");
         next();
       }
     } else {

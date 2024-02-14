@@ -28,7 +28,6 @@ const uploadTeamMembers = async (req: Request, res: Response) => {
     stream
       .pipe(csv())
       .on("data", async (row) => {
-        // Ensure that each CSV record includes userId, teamId, roleId, and status
         if (!row.userId) {
           console.error("Invalid CSV record:", row);
           return res.status(422).json({ message: "Invalid CSV records found" });
@@ -56,17 +55,10 @@ const uploadTeamMembers = async (req: Request, res: Response) => {
         });
       })
       .on("end", async () => {
-        console.log(csvData);
         try {
-          //   if (csvData.length === 0) {
-          //     return res
-          //       .status(422)
-          //       .json({ message: "No valid CSV records found" });
-          //   }
-
+     
           const userIds = csvData.map((record) => record.userId);
 
-          // Check for existing team members
           const existingTeamMembers = await TeamMemberInformation.findAll({
             where: {
               userId: userIds,
@@ -93,8 +85,7 @@ const uploadTeamMembers = async (req: Request, res: Response) => {
           );
           return res.status(500).json({ error: "Internal server error" });
         } finally {
-          // Cleanup: Remove the uploaded file after processing
-          fs.unlinkSync(req.file?.path || ""); // Using optional chaining and nullish coalescing
+          fs.unlinkSync(req.file?.path || ""); 
         }
       });
   } catch (error) {

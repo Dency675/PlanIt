@@ -16,10 +16,7 @@ Session.init(
       allowNull: false,
       unique: true,
     },
-    // roomId: {
-    //   type: DataTypes.STRING(255),
-    //   allowNull: false,
-    // },
+   
     sessionTitle: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -48,7 +45,6 @@ Session.init(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        // model: UserInformation,
         model: "user_information",
         key: "id",
       },
