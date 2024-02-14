@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import userInformation from "../../models/userInformation";
 import roles from "../../models/roles";
+import { Op } from "sequelize";
 // import userInformation from "./../../../types/modelTypes/userInformation";
 
 /**
@@ -13,7 +14,7 @@ import roles from "../../models/roles";
  */
 const getActiveTeamMembers = async (req: Request, res: Response) => {
   try {
-    const { teamId } = req.query;
+    const { teamId, userId } = req.query;
     if (!teamId) {
       return res
         .status(400)
@@ -25,7 +26,10 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
       include: [
         {
           model: userInformation,
-          where: { status: "active" },
+          where: { status: "active",
+          id: {
+            [Op.not]: userId // Exclude the given user id
+          } },
           attributes: ["givenName", "id", "surName"],
         },
         {

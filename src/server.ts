@@ -9,6 +9,9 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 import chooseRoutes from "./router";
 import getSessionById from "./controllers/sessions/getSessionById";
 import { sendEmailNotification } from "./controllers/email/send_mail";
+import userInformation from "./models/userInformation";
+import SessionParticipants from "./models/sessionParticipants";
+import sessions from "./models/sessions";
 interface User {
   name: string;
   email: string;
@@ -52,7 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-// sendEmailNotification("scheduledPlanningSession",users)
+
 
 chooseRoutes(app);
 
@@ -65,6 +68,29 @@ io.on("connection", (socket: Socket) => {
 
   socket.on("createRoom", async (sessionId: string) => {
     try {
+      
+      // const participants = await SessionParticipants.findAll({
+      //   where: { sessionId: sessionId },
+      //   include: [{
+      //     model: userInformation,
+      //     attributes: ['givenName', 'email'],
+      //   }],
+      // });
+  
+      // // Find the session title
+      // const session = await sessions.findOne({
+      //   where: { id: sessionId },
+      //   attributes: ['sessionTitle'],
+      // });
+
+      // const participantsInfo = participants.map(participant => ({
+      //   given_name: participant.userInformation.givenName,
+      //   email: participant.userInformation.email,
+      //   session_title: session?.sessionTitle,
+      // }));
+      // console.log(participantsInfo);
+  
+      // sendEmailNotification("scheduledPlanningSession",users)
       socket.join(sessionId);
 
       // io.to(sessionId).emit("roomCreated", {});
