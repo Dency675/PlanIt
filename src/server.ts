@@ -163,10 +163,10 @@ io.on("connection", (socket: Socket) => {
     io.to(sessionId).emit("showResult", sessionId, selectedUserStoryId);
   });
 
-  socket.on("startButtonClicked", async (sessionId) => {
+  socket.on("startButtonClicked", async (sessionId, count) => {
     socket.join(sessionId);
 
-    io.to(sessionId).emit("showParticipants", sessionId);
+    io.to(sessionId).emit("showParticipants", sessionId, count);
   });
 
   socket.on("userVoted", async (sessionId, teamMemberId) => {
@@ -185,6 +185,12 @@ io.on("connection", (socket: Socket) => {
       sessionId,
       userData
     );
+  });
+
+  socket.on("sessionEnded", async (sessionId) => {
+    socket.join(sessionId);
+
+    io.to(sessionId).emit("exitUsers");
   });
 
   socket.on("disconnect", () => {

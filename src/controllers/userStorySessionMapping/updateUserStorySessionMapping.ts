@@ -14,7 +14,12 @@ const updateUserStorySessionMapping = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { userStorySessionMappingId, comment, storyPointResult } = req.body;
+    const {
+      userStorySessionMappingId,
+      comment,
+      storyPointResult,
+      roundNumber,
+    } = req.body;
 
     if (
       !userStorySessionMappingId ||
@@ -45,6 +50,10 @@ const updateUserStorySessionMapping = async (
 
     if (storyPointResult !== undefined) {
       existingMapping.storyPointResult = storyPointResult;
+    }
+
+    if (roundNumber !== undefined) {
+      existingMapping.roundNumber = roundNumber;
     }
 
     await existingMapping.save();

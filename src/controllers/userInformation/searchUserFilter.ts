@@ -9,7 +9,6 @@ export const searchUserFilter = async (
 ): Promise<void> => {
   try {
     const { offset, search } = req.query;
-    // let { userList } = req.body;
     let { teamId, userList } = req.body;
 
     // Trim the search query if it's a string
@@ -23,9 +22,8 @@ export const searchUserFilter = async (
       skip = parseInt(offset as string);
     }
 
-    // Query team members based on team_id
     const teamMembers = await teamMemberInformation.findAll({
-      where: { team_id: teamId },
+      where: { team_id: teamId, status: "active" },
       attributes: ["user_id"],
     });
 

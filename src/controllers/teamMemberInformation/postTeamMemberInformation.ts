@@ -40,7 +40,7 @@ const addTeamMemberInformation = async (
     const newTeamMember = await teamMemberInformation.create({
       userId,
       teamId,
-      roleId: "1",
+      roleId: "2",
       status: "active",
     });
     res.status(201).json({
