@@ -18,7 +18,6 @@ const addMultipleMembers = async (
   try {
     const { teamId, userIds } = req.body;
 
-    // Check if teamId is provided
     if (!teamId || !Array.isArray(userIds)) {
       res.status(400).json({
         error:
@@ -27,7 +26,6 @@ const addMultipleMembers = async (
       return;
     }
 
-    // Validate each userId
     for (const userId of userIds) {
       const isUserActive = await userInformation.findOne({
         where: {
@@ -44,7 +42,6 @@ const addMultipleMembers = async (
       }
     }
 
-    // Prepare team members data for bulk insertion
     const teamMembersData = userIds.map((userId: number) => ({
       userId,
       teamId,
@@ -52,7 +49,6 @@ const addMultipleMembers = async (
       status: "active",
     }));
 
-    // Add team members to the database using bulkCreate
     const newTeamMembers = await teamMemberInformation.bulkCreate(
       teamMembersData
     );
@@ -72,7 +68,6 @@ const addMultipleMembers = async (
     });
 
 
-    // Map the retrieved information to the desired format
     const users = teamMembers.map((teamMember) => ({
       name: teamMember.userInformation.givenName,
       email: teamMember.userInformation.email,

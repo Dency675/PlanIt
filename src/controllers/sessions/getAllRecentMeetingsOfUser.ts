@@ -53,8 +53,8 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
 
       where: {
         [Op.or]: [
-          { teamId: { [Op.in]: teamIds } }, // Check if teamId is in teamIds
-          { id: { [Op.in]: sessionIds.map((session) => session.sessionId) } }, // Check if id is in sessionIds
+          { teamId: { [Op.in]: teamIds } }, 
+          { id: { [Op.in]: sessionIds.map((session) => session.sessionId) } },
         ],
         status: "completed",
       },

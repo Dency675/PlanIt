@@ -18,13 +18,11 @@ const getAllRolesOfUser = async (
   try {
     const userId: string | undefined = req.query.userId as string;
 
-    // Validate input
     if (!userId) {
       res.status(400).json({ error: "User ID is required" });
       return;
     }
 
-    // Check if user exists
     const user = await UserInformation.findByPk(userId);
 
     if (!user) {
@@ -32,7 +30,6 @@ const getAllRolesOfUser = async (
       return;
     }
 
-    // Get all roles of the user from EmployeeRoleMapping table
     const userRoleMappings = await EmployeeRoleMapping.findAll({
       where: { userId: userId },
       raw: true,
@@ -43,10 +40,8 @@ const getAllRolesOfUser = async (
       return;
     }
 
-    // Extract roleId's
     const roleIds = userRoleMappings.map((mapping) => mapping.roleId);
 
-    // Get role names from Roles table
     const roles = await Role.findAll({
       where: { id: roleIds },
       attributes: ["roleName"],

@@ -47,7 +47,6 @@ export const getScalesByID = async (
       res.status(404).json({ error: "Data Doesnt exist" });
     }
   } catch (error) {
-    console.log("Error in getScales", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

@@ -52,7 +52,6 @@ const getTeamMemberInformationByUserId = async (
       roleName: member.role.roleName,
     }));
 
-    console.log(formattedActiveTeamMembers);
 
     res.status(200).json({ activeTeamMembers: formattedActiveTeamMembers });
   } catch (error) {

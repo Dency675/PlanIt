@@ -1,4 +1,4 @@
-import { Sequelize,DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import sequelize  from "../config/sequelize";
 import Scales from '../../types/modelTypes/scales';  
 import Estimations from './estimations';

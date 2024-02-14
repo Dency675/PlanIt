@@ -3,7 +3,6 @@ import userInformation from "../../models/userInformation";
 import axios from "axios";
 import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import roles from "../../models/roles";
-import { where } from "sequelize";
 import addEmployeeRole from "../employeeRoleMapping/addEmployeeRole";
 
 /**
@@ -28,7 +27,6 @@ const postUserInformation = async (
     });
 
     const employeeId = graphApiResponse.data.id;
-    console.log(employeeId);
 
     const findUser = await userInformation.findOne({
       where: { employeeId: employeeId },
@@ -57,10 +55,6 @@ const postUserInformation = async (
 
       await addEmployeeRole(req, res);
 
-      // return res.status(200).json({
-      //   message: "User information inserted successfully",
-      //   data: userInformationAdd.toJSON(),
-      // });
     }
     const findUsers = await userInformation.findOne({
       where: { employeeId: employeeId },

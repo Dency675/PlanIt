@@ -4,8 +4,6 @@ import { getEstimations, getEstimationsByID }from '../controllers/estimations/ge
 import { putEstimations }from '../controllers/estimations/putEstimations'
 import { deleteEstimations }from '../controllers/estimations/deleteEstimations'
 import { searchEstimations } from "../controllers/estimations/searchEstimations";
-// import { searchTeams } from "../controllers/team_information/searchTeams";
-// import { searchUser } from "../controllers/user_information/searchUser";
 import { uploadEstimations } from "../controllers/estimations/addEstimations";
 import multer from 'multer'
 
@@ -35,14 +33,6 @@ router.patch("/deleteEstimations", async(req: Request, res: Response) => {
 router.get("/searchEstimations", async(req: Request, res: Response) => {
     searchEstimations(req,res);
 });
-
-// router.get("/searchTeams", async(req: Request, res: Response) => {
-//     searchTeams(req,res);
-// });
-
-// router.get("/searchUser", async(req: Request, res: Response) => {
-//     searchUser(req,res);
-// });
 
 router.post("/addEstimations",upload.single('csvFile'), async(req: Request, res: Response) => {
     uploadEstimations(req,res);

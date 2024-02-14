@@ -1,4 +1,3 @@
-// user.controller.ts
 import { Request, Response } from "express";
 import { Op } from "sequelize";
 import user_information from "../../models/userInformation";
@@ -15,7 +14,6 @@ export const searchUser = async (
     }
 
 
-    // Search for users by name
     const userResults = await user_information.findAll({
       where: {
         [Op.or]: [
@@ -25,7 +23,6 @@ export const searchUser = async (
       },
     });
 
-    console.log(userResults);
     res.status(200).json({ userResults });
   } catch (error) {
     console.error(error);

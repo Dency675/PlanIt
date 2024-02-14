@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize";
 import EmployeeRoleMapping from "../../types/modelTypes/employeeRoleMapping";
 import UserInformation from "./userInformation";
@@ -46,11 +46,5 @@ Role.belongsToMany(UserInformation, {
   foreignKey: "roleId",
   as: "role",
 });
-
-
-// EmployeeRoleMapping.hasMany(Role, {
-//   foreignKey: "roleId",
-//   as: "role",
-// });
 
 export default EmployeeRoleMapping;

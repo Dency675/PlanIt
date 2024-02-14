@@ -4,10 +4,7 @@ import express from "express";
 import http from "http";
 import { Server, Socket } from "socket.io";
 import { sequelizeSync } from "./services/sequelize";
-import sequelize from "./config/sequelize";
-import { Sequelize, DataTypes, Model } from "sequelize";
 import chooseRoutes from "./router";
-import getSessionById from "./controllers/sessions/getSessionById";
 import { sendEmailNotification } from "./controllers/email/send_mail";
 import userInformation from "./models/userInformation";
 import sessionParticipants from "./models/sessionParticipants";
@@ -36,13 +33,7 @@ const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
 };
-// const corsOptions = {
-//   origin: "http://localhost:3000", // Allow requests only from this origin
-//   methods: ["GET", "POST"], // Allow only specified methods
-//   allowedHeaders: ["Authorization", "Content-Type", "Referer"], // Allow only specified headers
-//   credentials: true, // Allow credentials
-//   optionsSuccessStatus: 200, // Return a successful status code for preflight requests
-// };
+
 
 app.use(cors(corsOptions));
 
@@ -56,9 +47,6 @@ app.use(express.json());
 
 chooseRoutes(app);
 
-// app.listen(port, () => {
-//   console.log(`Server is running on port ${port}`);
-// });
 
 io.on("connection", (socket: Socket) => {
   console.log("New client connected");
@@ -77,7 +65,6 @@ io.on("connection", (socket: Socket) => {
         ],
       });
 
-      // Find the session title
       const session = await sessions.findOne({
         where: { id: sessionId },
         attributes: ["sessionTitle"],
@@ -91,7 +78,6 @@ io.on("connection", (socket: Socket) => {
       sendEmailNotification("planningPokerStarted", participantsInfo);
       socket.join(sessionId);
 
-      // io.to(sessionId).emit("roomCreated", {});
       io.emit("roomCreated", sessionId);
       console.log(`Room created`);
     } catch (error) {
@@ -99,7 +85,6 @@ io.on("connection", (socket: Socket) => {
     }
   });
 
-  // socket.join(sessionId);
   socket.on("userStoryMappingId", (userStoryMappingId, sessionId) => {
     console.log(userStoryMappingId);
     console.log(typeof userStoryMappingId);
@@ -109,28 +94,13 @@ io.on("connection", (socket: Socket) => {
       userStoryMappingId,
       sessionId,
     });
-    // socket.emit("userStoryMappingIdDeveloper", userStoryMappingId, sessionId);
   });
 
   socket.on("joinRoom", async (sessionId, userId) => {
-    // socket.to(sessionId).emit("userJoined", { sessionId });
     try {
-      // const req: any = {
-      //   query: { sessionId },
-      // };
-
-      // const res: any = {
-      //   json: (data: any) => {
-      //     console.log("join room details", data);
-      //   },
-      // };
-
-      // await getSessionById(req, res);
-
+      
       socket.join(sessionId);
       io.to(sessionId).emit("userJoined", { sessionId });
-
-      // socket.to(sessionId).emit("userJoined", { sessionId });
 
       console.log(`User ${userId} joined room ${sessionId}`);
     } catch (error) {

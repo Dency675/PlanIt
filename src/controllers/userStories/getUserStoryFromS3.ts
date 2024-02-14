@@ -1,16 +1,13 @@
-// getS3Data.ts
 import { Request, Response } from "express";
 import AWS from "aws-sdk";
 import csvParser from "csv-parser";
 
-// Configure AWS SDK with your credentials
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
 });
 
-// Create an S3 instance
 const s3 = new AWS.S3();
 
 const getS3Data = (req: Request, res: Response): Promise<any> => {

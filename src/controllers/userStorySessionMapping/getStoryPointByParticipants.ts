@@ -1,6 +1,4 @@
-// controllers/userStorySessionController.ts
 import { Request, Response } from "express";
-import { Op } from "sequelize";
 import UserStorySessionMapping from "../../models/userStorySessionMapping";
 import ParticipantScores from "../../models/participantScores";
 import teamMemberInformation from "../../models/teamMemberInformation";
@@ -13,7 +11,6 @@ const getStoryPointByParticipants = async (
   try {
     const { sessionId } = req.query;
 
-    // Fetch user story session mappings for the given session including participant scores
     const userStorySessionMappings = await UserStorySessionMapping.findAll({
       where: { sessionId },
       attributes: ["userStoryId", "sessionId"],

@@ -28,7 +28,7 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
           model: userInformation,
           where: { status: "active",
           id: {
-            [Op.not]: userId // Exclude the given user id
+            [Op.not]: userId 
           } },
           attributes: ["givenName", "id", "surName"],
         },
@@ -53,7 +53,6 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
       roleName: member.role.roleName,
     }));
 
-    console.log(formattedActiveTeamMembers);
 
     res.status(200).json({ activeTeamMembers: formattedActiveTeamMembers });
   } catch (error) {

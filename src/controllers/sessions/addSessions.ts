@@ -75,8 +75,7 @@ const addSessions = async (
       });
     };
 
-    console.log("file is : ", req.file);
-    console.log("file is : ", req.file?.originalname);
+
     let fileName = "";
     if (req.file) fileName = req.file.originalname;
 
@@ -99,7 +98,6 @@ const addSessions = async (
       fileName: fileName,
     };
 
-    console.log(responseData);
     return res.status(201).json({ responseData });
   } catch (error) {
     console.error("Error creating session:", error);

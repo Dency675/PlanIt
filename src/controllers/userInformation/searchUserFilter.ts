@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Op, Sequelize } from "sequelize";
+import { Op } from "sequelize";
 import userInformation from "../../models/userInformation";
 import teamMemberInformation from "../../models/teamMemberInformation";
 
@@ -9,10 +9,8 @@ export const searchUserFilter = async (
 ): Promise<void> => {
   try {
     const { offset, search } = req.query;
-    // let { userList } = req.body;
     let { teamId, userList } = req.body;
 
-    // Trim the search query if it's a string
     let searchString = search;
     if (typeof searchString === "string") {
       searchString = searchString.trim();
@@ -23,18 +21,15 @@ export const searchUserFilter = async (
       skip = parseInt(offset as string);
     }
 
-    // Query team members based on team_id
     const teamMembers = await teamMemberInformation.findAll({
       where: { team_id: teamId },
       attributes: ["user_id"],
     });
 
-    // Extract user IDs from team members
     const userIds: string[] = teamMembers.map((member) =>
       member.getDataValue("user_id")
     );
 
-    // Query users not in the team and retrieve their emails
     const excludedUsers = await userInformation.findAll({
       where: { id: { [Op.in]: userIds } },
       attributes: ["email"],
@@ -47,9 +42,6 @@ export const searchUserFilter = async (
 
     const excludedEmails = [...excludedEmailss, ...excludedEmailsss];
 
-    console.log(excludedEmails);
-
-    // Search for users by name excluding users in the userList
     const userResults = await userInformation.findAll({
       where: {
         [Op.and]: [

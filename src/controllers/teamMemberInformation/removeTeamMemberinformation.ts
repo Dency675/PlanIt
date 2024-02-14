@@ -51,7 +51,6 @@ const removeTeamMember = async (req: Request, res: Response): Promise<void> => {
         throw new Error('Team member information not found');
       }
   
-      // Extract and format user info from the result
       const userInfo = [{
         name: teamMemberInfo.userInformation.givenName,
         email: teamMemberInfo.userInformation.email,

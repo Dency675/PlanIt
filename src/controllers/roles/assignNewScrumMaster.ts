@@ -11,19 +11,16 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
   try {
     const teamMemberId = parseInt(req.query.teamMemberId as string);
 
-    // Validate team member ID
     if (isNaN(teamMemberId)) {
       return res.status(400).json({ error: "Invalid team member ID" });
     }
 
-    // Find the team member by id
     const teamMember = await teamMemberInformation.findByPk(teamMemberId);
     if (!teamMember) {
       return res.status(404).json({ error: "Team member not found" });
     }
 
     const updationTransaction = await sequelize.transaction();
-    // Find the roles
     const [scrumMasterRole, developerRole] = await Promise.all([
       roles.findOne({
         where: { role_name: "scrum master" },
@@ -85,7 +82,6 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
     }];
 
 
-    // Update roles
     const updated = await Promise.all([
       teamMemberInformation.update(
         { roleId: developerRole.id },
@@ -102,7 +98,6 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
 
     updationTransaction.commit();
     if (updated) {
-      console.log("updated is", updated);
 
       sendEmailNotification("newScrumMaster",newScrumMaster)
       sendEmailNotification("nolongerScrumMaster",oldScrumMaster)
