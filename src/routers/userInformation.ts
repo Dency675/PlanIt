@@ -11,6 +11,9 @@ import { searchUserFilter } from "../controllers/userInformation/searchUserFilte
 import getAllUsers from "../controllers/userInformation/getAllUser";
 import updateUserRoleToProjectManager from "../controllers/employeeRoleMapping/updateEmployeeRoleToProjectManager";
 import getUserInformationById from "../controllers/userInformation/getUserInformationById";
+import getUserInformationByRoleId from "../controllers/employeeRoleMapping/getAllTeamManager";
+import getAllTeamManager from "../controllers/employeeRoleMapping/getAllTeamManager";
+
 
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post(
@@ -81,5 +84,14 @@ userInformationRouter.put(
     updateUserRoleToProjectManager(req, res);
   }
 );
+
+userInformationRouter.get(
+  "/getAllTeamManager",
+  async (req: Request, res: Response) => {
+    getAllTeamManager(req, res);
+  }
+);
+
+
 
 export default userInformationRouter;
