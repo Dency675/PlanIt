@@ -35,6 +35,7 @@ EmployeeRoleMapping.init(
     sequelize,
   }
 );
+UserInformation.hasMany(EmployeeRoleMapping, { foreignKey: 'userId' });
 
 UserInformation.belongsToMany(Role, {
   through: EmployeeRoleMapping,
@@ -45,6 +46,7 @@ Role.belongsToMany(UserInformation, {
   foreignKey: "roleId",
   as: "role",
 });
+
 
 // EmployeeRoleMapping.hasMany(Role, {
 //   foreignKey: "roleId",
