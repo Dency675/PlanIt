@@ -89,7 +89,7 @@ io.on("connection", (socket: Socket) => {
         email: participant.user.email,
         storyName: session?.sessionTitle,
     }));
-            sendEmailNotification("scheduledPlanningSession",participantsInfo)
+            sendEmailNotification("planningPokerStarted",participantsInfo)
       socket.join(sessionId);
 
       // io.to(sessionId).emit("roomCreated", {});
