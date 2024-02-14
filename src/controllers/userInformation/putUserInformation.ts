@@ -31,7 +31,7 @@ const putUserInformation = async (req: Request, res: Response): Promise<void> =>
       email: user.email,
     }];
   
-    sendEmailNotification("teamMemberDeleted",userInfo)
+    sendEmailNotification("userDeleted",userInfo)
   }
     res.status(200).json({
       message: "User information updated successfully",
