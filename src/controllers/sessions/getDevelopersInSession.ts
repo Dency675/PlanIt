@@ -43,7 +43,7 @@ const getDevelopersInSession = async (
               include: [
                 {
                   model: participantScores,
-                  attributes: ["id", "storyPoint"],
+                  attributes: ["id", "userStorySessionMappingId", "storyPoint"],
                   as: "sessionParticipant",
                 },
               ],
@@ -64,7 +64,8 @@ const getDevelopersInSession = async (
       userRole: participant.role.roleName,
       roleId: participant.roleId,
       teamMemberId: participant.user.teamMember[0].id,
-      score: participant.user.teamMember,
+      teamId: participant.user.teamMember[0].teamId,
+      score: participant.user.teamMember[0].sessionParticipant,
     }));
 
     participantData.sort((a, b) => a.roleId - b.roleId);
