@@ -6,7 +6,6 @@ import { sendEmailNotification } from "../email/send_mail";
 import userInformation from "../../models/userInformation";
 import teamInformation from "../../models/teamInformation";
 
-
 const assignNewScrumMaster = async (req: Request, res: Response) => {
   try {
     const teamMemberId = parseInt(req.query.teamMemberId as string);
@@ -41,49 +40,59 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
     const newScrumMasterInfo = await teamMemberInformation.findOne({
       where: { id: teamMemberId },
       attributes: [],
-      include: [{
-        model: userInformation,
-        attributes: ['givenName', 'email'],
-      }, {
-        model: teamInformation,
-        attributes: ['teamName'],
-      }],
+      include: [
+        {
+          model: userInformation,
+          attributes: ["givenName", "email"],
+        },
+        {
+          model: teamInformation,
+          attributes: ["teamName"],
+        },
+      ],
     });
 
     if (!newScrumMasterInfo) {
-      throw new Error('Team member not found');
+      throw new Error("Team member not found");
     }
 
-    const newScrumMaster = [{
-      name: newScrumMasterInfo.userInformation.givenName,
-      email: newScrumMasterInfo.userInformation.email,
-      teamName: newScrumMasterInfo.teamInformation.teamName,
-    }];
+    const newScrumMaster = [
+      {
+        name: newScrumMasterInfo.userInformation.givenName,
+        email: newScrumMasterInfo.userInformation.email,
+        teamName: newScrumMasterInfo.teamInformation.teamName,
+      },
+    ];
 
     const oldScrumMasterInfo = await teamMemberInformation.findOne({
       attributes: [],
-      include: [{
-        model: userInformation,
-        attributes: ['givenName', 'email'],
-      }, {
-        model: teamInformation,
-        where: { teamName: newScrumMasterInfo.teamInformation.teamName },
-        attributes: ['teamName'],
-      }, {
-        model: roles,
-        where: { roleName: "scrum master" },
-        attributes: [],
-      }],
+      include: [
+        {
+          model: userInformation,
+          attributes: ["givenName", "email"],
+        },
+        {
+          model: teamInformation,
+          where: { teamName: newScrumMasterInfo.teamInformation.teamName },
+          attributes: ["teamName"],
+        },
+        {
+          model: roles,
+          where: { roleName: "scrum master" },
+          attributes: [],
+        },
+      ],
     });
-    if (!oldScrumMasterInfo) {
-      throw new Error('Team member not found');
+    let oldScrumMaster: { name: any; email: any; teamName: any }[] = [];
+    if (oldScrumMasterInfo) {
+      oldScrumMaster = [
+        {
+          name: oldScrumMasterInfo.userInformation.givenName,
+          email: oldScrumMasterInfo.userInformation.email,
+          teamName: oldScrumMasterInfo.teamInformation.teamName,
+        },
+      ];
     }
-    const oldScrumMaster = [{
-      name: oldScrumMasterInfo.userInformation.givenName,
-      email: oldScrumMasterInfo.userInformation.email,
-      teamName: oldScrumMasterInfo.teamInformation.teamName,
-    }];
-
 
     // Update roles
     const updated = await Promise.all([
@@ -104,11 +113,11 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
     if (updated) {
       console.log("updated is", updated);
 
-      sendEmailNotification("newScrumMaster",newScrumMaster)
-      sendEmailNotification("nolongerScrumMaster",oldScrumMaster)
-
+      sendEmailNotification("newScrumMaster", newScrumMaster);
+      if (oldScrumMasterInfo) {
+        sendEmailNotification("nolongerScrumMaster", oldScrumMaster);
+      }
       res.status(200).json({ message: "Role updated successfully" });
-  
     } else {
       updationTransaction.rollback();
       throw new Error("not updated!");

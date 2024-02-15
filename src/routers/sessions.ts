@@ -12,6 +12,7 @@ import getAllRecentMeetingsOfUser from "../controllers/sessions/getAllRecentMeet
 import getAllOngoingMeetingsOfUser from "../controllers/sessions/getAllOngoingMeetingsOfUser";
 import multer from "multer";
 import editSessionParticipants from "../controllers/sessions/editSessionParticipants";
+import getSessionByIdVoting from "../controllers/sessions/getSessionByIdVoting";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -26,6 +27,10 @@ router.post(
 );
 router.get("/getSessionById", (req: Request, res: Response) => {
   getSessionById(req, res);
+});
+
+router.get("/getSessionByIdVoting", (req: Request, res: Response) => {
+  getSessionByIdVoting(req, res);
 });
 router.patch("/editSessions", (req: Request, res: Response) => {
   editSessions(req, res);

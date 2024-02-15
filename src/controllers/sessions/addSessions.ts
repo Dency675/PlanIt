@@ -6,9 +6,10 @@ import { ManagedUpload } from "aws-sdk/lib/s3/managed_upload";
 
 interface SessionPostResponse {
   message: string;
-  data: Session;
-  SessionId: number;
-  fileName: string;
+  data: {
+    newSession: Session;
+    fileName: string;
+  };
 }
 /**
  * Adds a new session to the database.
@@ -92,11 +93,14 @@ const addSessions = async (
       calculationId: calculationId,
     });
 
+    const data = {
+      newSession: newSession,
+      fileName: fileName,
+    };
+
     const responseData: SessionPostResponse = {
       message: "Session created successfully",
-      data: newSession,
-      SessionId: newSession.id,
-      fileName: fileName,
+      data: data,
     };
 
     console.log(responseData);

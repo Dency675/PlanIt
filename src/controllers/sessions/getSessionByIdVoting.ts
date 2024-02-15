@@ -6,7 +6,7 @@ import Estimation from "../../models/estimations";
 import Calculation from "../../models/calculations";
 import { Sequelize } from "sequelize";
 import SessionParticipants from "../../models/sessionParticipants";
-import participantScores from "./../../models/participantScores";
+import participantScores from "../../models/participantScores";
 import roles from "../../models/roles";
 
 /**
@@ -17,12 +17,12 @@ import roles from "../../models/roles";
  * @returns {Promise<Response>} - A JSON response containing session details or an error message along with the appropriate status code.
  */
 
-const getSessionById = async (
+const getSessionByIdVoting = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
-    const { sessionId, isJoined } = req.query;
+    const { sessionId } = req.query;
 
     const sessions = await Session.findOne({
       where: { id: sessionId },
@@ -38,7 +38,6 @@ const getSessionById = async (
             { model: User, as: "user" },
             { model: roles, as: "role" },
           ],
-          where: { isJoined: isJoined },
         },
       ],
       attributes: [
@@ -134,4 +133,4 @@ const getSessionById = async (
   }
 };
 
-export default getSessionById;
+export default getSessionByIdVoting;
