@@ -4,6 +4,7 @@ import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
 import teamMemberInformation from "../../models/teamMemberInformation";
 import participantScores from "../../models/participantScores";
+import Session from "../../models/sessions";
 
 /**
  * Retrieves developers participating in a session based on the provided session ID.
@@ -24,6 +25,16 @@ const getDevelopersInSession = async (
       return res.status(400).json({ message: "Session ID is required" });
     }
 
+    const teamId = await Session.findOne({
+      where: { id: sessionId },
+      attributes: ["teamId"],
+    });
+
+    console.log("teamId");
+    console.log(teamId?.dataValues.teamId);
+
+    const sessionTeamId = teamId?.dataValues.teamId;
+
     const participants = await SessionParticipant.findAll({
       where: {
         sessionId: sessionId,
@@ -38,6 +49,7 @@ const getDevelopersInSession = async (
           include: [
             {
               model: teamMemberInformation,
+              where: { teamId: sessionTeamId },
               attributes: ["id", "teamId"],
               as: "teamMember",
               include: [
