@@ -172,7 +172,7 @@ io.on("connection", (socket: Socket) => {
   socket.on("userVoted", async (sessionId, teamMemberId) => {
     socket.join(sessionId);
     console.log("userVoted", sessionId, teamMemberId);
-
+    console.log("userVotedAdded");
     io.to(sessionId).emit("userVotedAdded", sessionId, teamMemberId);
   });
 

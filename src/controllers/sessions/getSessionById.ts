@@ -22,7 +22,7 @@ const getSessionById = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { sessionId, isJoined } = req.query;
+    const { sessionId } = req.query;
 
     const sessions = await Session.findOne({
       where: { id: sessionId },
@@ -38,7 +38,7 @@ const getSessionById = async (
             { model: User, as: "user" },
             { model: roles, as: "role" },
           ],
-          where: { isJoined: isJoined },
+          where: { isJoined: true },
         },
       ],
       attributes: [

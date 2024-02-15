@@ -26,10 +26,12 @@ const getActiveTeamMembers = async (req: Request, res: Response) => {
       include: [
         {
           model: userInformation,
-          where: { status: "active",
-          id: {
-            [Op.not]: userId // Exclude the given user id
-          } },
+          where: {
+            status: "active",
+            id: {
+              [Op.not]: userId, // Exclude the given user id
+            },
+          },
           attributes: ["givenName", "id", "surName"],
         },
         {
