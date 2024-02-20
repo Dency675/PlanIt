@@ -104,6 +104,8 @@ const addSessions = async (
     };
 
     console.log(responseData);
+    console.log(data.newSession);
+
     return res.status(201).json({ responseData });
   } catch (error) {
     console.error("Error creating session:", error);

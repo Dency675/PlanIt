@@ -38,7 +38,7 @@ const getSessionById = async (
             { model: User, as: "user" },
             { model: roles, as: "role" },
           ],
-          where: { isJoined: true },
+          // where: { isJoined: true },
         },
       ],
       attributes: [
@@ -68,6 +68,7 @@ const getSessionById = async (
       userName: participant.user.givenName,
       userEmail: participant.user.email,
       userRole: participant.role.roleName,
+      isJoined: participant.isJoined,
     }));
 
     let productOwnerName = "";
@@ -85,11 +86,12 @@ const getSessionById = async (
           projectManagerName = user.givenName;
           break;
         case "developer":
-          developerList.push({
-            userId: user.id,
-            userName: user.givenName,
-            userEmail: user.email,
-          });
+          if (participant.isJoined === true)
+            developerList.push({
+              userId: user.id,
+              userName: user.givenName,
+              userEmail: user.email,
+            });
           break;
         case "guest":
           guestList.push({ userId: user.id, userName: user.givenName });
