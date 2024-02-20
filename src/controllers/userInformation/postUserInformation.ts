@@ -56,11 +56,6 @@ const postUserInformation = async (
       };
 
       await addEmployeeRole(req, res);
-
-      // return res.status(200).json({
-      //   message: "User information inserted successfully",
-      //   data: userInformationAdd.toJSON(),
-      // });
     }
     const findUsers = await userInformation.findOne({
       where: { employeeId: employeeId },
