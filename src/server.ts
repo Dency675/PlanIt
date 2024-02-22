@@ -128,7 +128,7 @@ io.on("connection", (socket: Socket) => {
       // await getSessionById(req, res);
 
       socket.join(sessionId);
-      io.to(sessionId).emit("userJoined", { sessionId });
+      io.to(sessionId).emit("userJoined", { sessionId, userId });
 
       // socket.to(sessionId).emit("userJoined", { sessionId });
 
