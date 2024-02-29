@@ -8,20 +8,20 @@ import deleteRole from "../controllers/roles/deleteRoles";
 
 const roleRouter = express.Router();
 
-roleRouter.post("/addRoles", (req: Request, res: Response) => {
+roleRouter.post("/roles", (req: Request, res: Response) => {
   addRoles(req, res);
 });
 
-roleRouter.get("/getAllRoles", (req: Request, res: Response) => {
+roleRouter.get("/roles", (req: Request, res: Response) => {
   getAllRoles(req, res);
 });
-roleRouter.get("/getRoleByID", (req: Request, res: Response) => {
+roleRouter.get("/roles/:id", (req: Request, res: Response) => {
   getRoleByID(req, res);
 });
-roleRouter.put("/editRoles", (req: Request, res: Response) => {
+roleRouter.put("/roles/:id", (req: Request, res: Response) => {
   editRoles(req, res);
 });
-roleRouter.delete("/deleteRole", (req: Request, res: Response) => {
+roleRouter.delete("/roles/:id", (req: Request, res: Response) => {
   deleteRole(req, res);
 });
 
