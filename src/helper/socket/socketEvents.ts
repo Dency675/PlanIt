@@ -3,16 +3,7 @@ import { sendEmailNotification } from "../../controllers/email/send_mail";
 import userInformation from "../../models/userInformation";
 import sessionParticipants from "../../models/sessionParticipants";
 import sessions from "../../models/sessions";
-
-interface UserData {
-  userName: string;
-  roleId: number;
-  teamMemberId: number;
-  score: {
-    userStorySessionMappingId: number;
-    storyPoint: string;
-  }[];
-}
+import { UserData } from "./types/index";
 
 export const joinRoom = async (
   io: Server,
@@ -225,7 +216,6 @@ export const timerSet = async (
   sessionId: string,
   currentTime: string
 ) => {
-  //   try {
   socket.join(sessionId);
 
   console.log("timer set");
@@ -234,15 +224,4 @@ export const timerSet = async (
     sessionId,
     currentTime,
   });
-
-  //   socket.join(sessionId);
-  //   io.to(sessionId).emit("timerShow", {
-  //     isTimerRunning,
-  //     sessionId,
-  //     currentTime,
-  //   });
-
-  //   } catch (error) {
-  //     console.error("Error creating room:", error);
-  //   }
 };

@@ -20,8 +20,8 @@ interface SessionPostResponse {
  */
 
 const s3 = new AWS.S3({
-  accessKeyId: "AKIA5IOGN2NXNVX6UNHV",
-  secretAccessKey: "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",
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 const addSessions = async (
@@ -56,7 +56,7 @@ const addSessions = async (
     const file = req?.file as Express.Multer.File;
 
     const params: AWS.S3.PutObjectRequest = {
-      Bucket: "ecommercebucket1",
+      Bucket: process.env.AWS_BUCKET_NAME!,
       Key: file?.originalname,
       Body: Readable.from(file?.buffer),
       ContentType: file?.mimetype,
