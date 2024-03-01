@@ -27,13 +27,10 @@ export const startVoting = async (
   isStartButtonStarted: boolean
 ) => {
   try {
-    console.log("startVoting", sessionId, isStartButtonStarted);
     socket.join(sessionId);
-
-    console.log("votingStarted");
     io.to(sessionId).emit("votingStarted", sessionId, isStartButtonStarted);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in start voting:", error);
   }
 };
 
@@ -49,7 +46,7 @@ export const revealClicked = async (
     io.to(sessionId).emit("showResult", sessionId, selectedUserStoryId);
     io.to(sessionId).emit("enableCommentBox", sessionId);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in result revealing:", error);
   }
 };
 
@@ -66,7 +63,7 @@ export const startButtonClicked = async (
     io.to(sessionId).emit("disableCommentBox", sessionId);
     io.to(sessionId).emit("resetSeletedCard", sessionId);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in session starting:", error);
   }
 };
 
@@ -82,7 +79,7 @@ export const resultSaved = async (
     io.to(sessionId).emit("disableCommentBox", sessionId);
     io.to(sessionId).emit("resetSeletedCard", sessionId);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in save result:", error);
   }
 };
 
@@ -96,7 +93,7 @@ export const saveResultClicked = async (
 
     io.to(sessionId).emit("commentBoxValidation", sessionId);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in save result:", error);
   }
 };
 
@@ -109,11 +106,9 @@ export const userVoted = async (
 ) => {
   try {
     socket.join(sessionId);
-    console.log("userVoted", sessionId, teamMemberId);
-    console.log("userVotedAdded");
     io.to(sessionId).emit("userVotedAdded", sessionId, teamMemberId, index);
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in user voting:", error);
   }
 };
 
@@ -125,7 +120,6 @@ export const sessionParticipantsScore = async (
 ) => {
   try {
     socket.join(sessionId);
-    console.log("sessionParticipantsScore", sessionId, userData);
 
     io.to(sessionId).emit(
       "currentSessionParticipantsScore",
@@ -133,7 +127,7 @@ export const sessionParticipantsScore = async (
       userData
     );
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in adding session participant score:", error);
   }
 };
 
@@ -147,7 +141,7 @@ export const sessionEnded = async (
 
     io.to(sessionId).emit("exitUsers");
   } catch (error) {
-    console.error("Error joining room:", error);
+    console.error("Error in end the session:", error);
   }
 };
 
@@ -158,16 +152,12 @@ export const userStorySelected = async (
   sessionId: string
 ) => {
   try {
-    console.log(userStoryMappingId);
-    console.log(typeof userStoryMappingId);
-    console.log(sessionId);
-
     io.to(sessionId).emit("userStoryMappingIdDeveloper", {
       userStoryMappingId,
       sessionId,
     });
   } catch (error) {
-    console.error("Error creating room:", error);
+    console.error("Error in user story selection:", error);
   }
 };
 
@@ -216,12 +206,15 @@ export const timerSet = async (
   sessionId: string,
   currentTime: string
 ) => {
-  socket.join(sessionId);
+  try {
+    socket.join(sessionId);
 
-  console.log("timer set");
-  io.to(sessionId).emit("timerShow", {
-    isTimerRunning,
-    sessionId,
-    currentTime,
-  });
+    io.to(sessionId).emit("timerShow", {
+      isTimerRunning,
+      sessionId,
+      currentTime,
+    });
+  } catch (error) {
+    console.error("Error in set time:", error);
+  }
 };

@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import http from "http";
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { sequelizeSync } from "./services/sequelize";
 import chooseRoutes from "./router";
 import socketConnection from "./helper/socket";
@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.BASE_URL,
   credentials: true,
 };
 

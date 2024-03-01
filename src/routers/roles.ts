@@ -1,5 +1,5 @@
 import express from "express";
-import { Request, Response, Router } from "express";
+import { Request, Response } from "express";
 import addRoles from "../controllers/roles/addRoles";
 import getRoleByID from "../controllers/roles/getRoleByID";
 import editRoles from "../controllers/roles/editRoles";

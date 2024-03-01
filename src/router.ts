@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import { Express } from "express";
 import teamInformationRouter from "./routers/teamInformation";
 import userStoriesRouter from "./routers/userStories";
 import noteInformationRouter from "./routers/noteInformation";
