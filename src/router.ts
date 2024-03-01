@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import { Express } from "express";
 import teamInformationRouter from "./routers/teamInformation";
 import userStoriesRouter from "./routers/userStories";
 import noteInformationRouter from "./routers/noteInformation";
@@ -10,10 +10,7 @@ import userInformationRouter from "./routers/userInformation";
 import sessionRouter from "./routers/sessions";
 import teamMemberInformationRouter from "./routers/teamMemberInformation";
 import userStorySesssionMappingRouter from "./routers/userStorySessionMapping";
-import participantScores from "./models/participantScores";
 import participantScoresRouter from "./routers/participantScores";
-
-const router = express.Router();
 
 const chooseRoutes = (app: Express) => {
   app.use(teamInformationRouter);

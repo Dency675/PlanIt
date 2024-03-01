@@ -11,7 +11,7 @@ import roles from "../../models/roles";
 
 const getRoleByID = async (req: Request, res: Response) => {
   try {
-    const id = req.query.id;
+    const id = req.params.id;
 
     if (!id) {
       return res.status(422).json({
