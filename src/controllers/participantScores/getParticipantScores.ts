@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import participantScores from "../../models/participantScores";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Retrieves participant scores for a specified team member.
@@ -14,19 +16,25 @@ const getParticipantScores = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { teamMemberId } = req.query;
+    const teamMemberId = req.params.teamMemberId;
+
     if (!teamMemberId) {
-      res.send(404).json({ error: "Bad Request" });
+      return failure(res, 404, null, "Bad Request");
     }
 
     const data = await participantScores.findOne({
       where: { teamMemberId },
       raw: true,
     });
-    res.status(500).json(data?.storyPoint);
+
+    if (data) {
+      return success(res, 200, data.storyPoint, "Found Participant Score");
+    } else {
+      return failure(res, 404, null, "Data not found");
+    }
   } catch {
     (error: any) => {
-      res.status(500).json({ error: error.toString() });
+      return failure(res, 500, null, error.toString);
     };
   }
 };

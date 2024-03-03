@@ -53,7 +53,7 @@ teamMemberInformationRouter.post(
 );
 
 teamMemberInformationRouter.put(
-  "/assignNewScrumMaster",
+  "/teamMemberInformation/:teamMemberId",
   async (req: Request, res: Response) => {
     assignNewScrumMaster(req, res);
   }

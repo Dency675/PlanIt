@@ -8,27 +8,27 @@ import resetStoryPoint from "../controllers/participantScores/resetStoryPoint";
 const participantScoresRouter = express.Router();
 
 participantScoresRouter.post(
-  "/addParticipantScores",
+  "/participantScores",
   async (req: Request, res: Response) => {
     addParticipantScores(req, res);
   }
 );
 
 participantScoresRouter.get(
-  "/getParticipantScores",
+  "/participantScores/:teamMemberId",
   async (req: Request, res: Response) => {
     getParticipantScores(req, res);
   }
 );
 
 participantScoresRouter.get(
-  "/listOfParticipantsWithTheirScore",
+  "/participantScores",
   async (req: Request, res: Response) => {
     listOfParticipantsWithTheirScore(req, res);
   }
 );
 participantScoresRouter.put(
-  "/resetStoryPoint",
+  "/participantScores",
   async (req: Request, res: Response) => {
     resetStoryPoint(req, res);
   }

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Scales from "../../models/scales";
 import Estimations from "../../models/estimations";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the retrieval of a scale in the Scale model.
@@ -15,11 +17,10 @@ export const getScalesByID = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { estimationId } = req.query;
+    const { estimationId } = req.params;
 
     if (!estimationId) {
-      res.status(422).json({ error: "Missing Values " });
-      return;
+      return failure(res, 422, null, "Missing Values");
     }
 
     const data = await Scales.findAll({
@@ -42,12 +43,11 @@ export const getScalesByID = async (
 
       formattedData.push({ scaleName: "?", scaleValue: -1 });
 
-      res.status(201).json({ formattedData });
+      return success(res, 201, formattedData, "Scale Found");
     } else {
-      res.status(404).json({ error: "Data Doesnt exist" });
+      return failure(res, 404, null, "Data Doesnt exist");
     }
   } catch (error) {
-    console.log("Error in getScales", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return failure(res, 500, null, "Internal server error!");
   }
 };
