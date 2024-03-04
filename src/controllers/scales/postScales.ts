@@ -1,5 +1,7 @@
-import { Request, Response } from 'express';
-import Scales from '../../models/scales';
+import { Request, Response } from "express";
+import Scales from "../../models/scales";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the creation of a scale in the Scale model.
@@ -9,34 +11,29 @@ import Scales from '../../models/scales';
  * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
  */
 
-export const postScales = async(req: Request, res: Response):Promise<void> => {
-
-try{
+export const postScales = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
     const { estimationId, scaleName, scaleValue } = req.body;
-   
-    if (!scaleName||!estimationId||!scaleValue) {
-        res.status(422).json({error: "Missing Values "});
-        return;
-      }
 
-    const found = await Scales.create(
-          {
-            estimationId:estimationId,
-            scaleName:scaleName, 
-            scaleValue:scaleValue
-          } 
-        );
-          
-        if (found) {
-          res.status(201).json({ message: "Inserted" });
-        } else {
-          res.status(500).json({ error: "Failed to insert data" });
-        }
-
-        }catch(error){
-          console.log("Error in postScales",error);
-          res.status(500).json({ message: "Internal Server Error" });
-        }
-
+    if (!scaleName || !estimationId || !scaleValue) {
+      return failure(res, 422, null, "Missing Values");
     }
 
+    const found = await Scales.create({
+      estimationId: estimationId,
+      scaleName: scaleName,
+      scaleValue: scaleValue,
+    });
+
+    if (found) {
+      return success(res, 201, null, "Scale Created");
+    } else {
+      return failure(res, 500, null, "Failed to insert data");
+    }
+  } catch (error) {
+    return failure(res, 500, null, "Internal server error!");
+  }
+};

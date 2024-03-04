@@ -1,5 +1,7 @@
 import { Request, Response, Router } from "express";
 import roles from "../../models/roles";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Retrieves all roles from the roles model.
@@ -14,12 +16,12 @@ const getAllRoles = async (req: Request, res: Response) => {
     const value = await roles.findAll();
 
     if (value && value.length > 0) {
-      res.status(200).json(value);
+      return success(res, 200, value, "All Roles");
     } else {
-      res.status(404).send("Error!\nRole not found...");
+      return failure(res, 404, null, "Role not found");
     }
   } catch (error) {
-    res.status(500).send("Internal server error!").json({ error: error });
+    return failure(res, 500, error, "Internal server error!");
   }
 };
 

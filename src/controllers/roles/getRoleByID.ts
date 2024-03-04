@@ -1,5 +1,7 @@
 import { Request, Response, Router } from "express";
 import roles from "../../models/roles";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Retrieves a role from the roles model by its unique identifier (id).
@@ -14,21 +16,19 @@ const getRoleByID = async (req: Request, res: Response) => {
     const id = req.params.id;
 
     if (!id) {
-      return res.status(422).json({
-        error: "id is missing",
-      });
+      return failure(res, 422, null, "id is missing");
     }
 
     const value = await roles.findOne({
       where: { id: id },
     });
     if (value) {
-      res.status(200).json(value);
+      return success(res, 200, value, "Role found");
     } else {
-      res.status(404).send("Error!\nRole not found...");
+      return failure(res, 404, null, "Role not found");
     }
   } catch (error) {
-    res.status(500).send("Internal server error!").json({ error: error });
+    return failure(res, 500, error, "Internal server error!");
   }
 };
 

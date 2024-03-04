@@ -4,11 +4,11 @@ import { getScalesByID } from "../controllers/scales/getScales";
 
 const router: Router = express.Router();
 
-router.post("/postScales", async (req: Request, res: Response) => {
+router.post("/scales", async (req: Request, res: Response) => {
   postScales(req, res);
 });
 
-router.get("/getScalesByID", async (req: Request, res: Response) => {
+router.get("/scales/:estimationId", async (req: Request, res: Response) => {
   getScalesByID(req, res);
 });
 

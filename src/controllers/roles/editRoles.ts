@@ -1,5 +1,7 @@
 import { Request, Response, Router } from "express";
 import roles from "../../models/roles";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Updates a role in the roles model by its unique identifier (id).
@@ -11,11 +13,11 @@ import roles from "../../models/roles";
 
 const editRoles = async (req: Request, res: Response) => {
   try {
-    const id = req.query.id;
+    const id = req.params.id;
     const roleName = req.body.roleName;
 
     if (!roleName) {
-      return res.status(400).send("Role name is missing or empty");
+      return failure(res, 400, null, "Role name is missing or empty");
     }
 
     const updater = await roles.update(
@@ -24,14 +26,17 @@ const editRoles = async (req: Request, res: Response) => {
     );
 
     if (updater[0] === 1) {
-      res
-        .status(200)
-        .send(`Role no. ${id} has been sucessfully changed to: ${roleName}`);
+      return success(
+        res,
+        200,
+        null,
+        "Role no. ${id} has been sucessfully changed to: ${roleName}"
+      );
     } else {
-      res.status(404).send("Role is not found");
+      return failure(res, 404, null, "Role is not found");
     }
   } catch (error) {
-    res.status(500).send("Internal server error!").json({ error: error });
+    return failure(res, 500, error, "Internal server error!");
   }
 };
 

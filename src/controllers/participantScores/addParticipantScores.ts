@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import participantScores from "../../models/participantScores";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the addition of participant scores table.
@@ -14,12 +16,9 @@ const addParticipantScores = async (
 ): Promise<void> => {
   try {
     const { teamMemberId, userStorySessionMappingId, storyPoint } = req.body;
-    console.log(teamMemberId);
-    console.log(userStorySessionMappingId);
-    console.log(storyPoint);
+
     if (teamMemberId && userStorySessionMappingId && storyPoint == undefined) {
-      res.status(400).json({ error: "Bad Request - Missing required fields" });
-      return;
+      return failure(res, 400, null, "Bad Request - Missing required fields");
     }
 
     let data = await participantScores.findOne({
@@ -46,7 +45,7 @@ const addParticipantScores = async (
           userStorySessionMappingId,
         },
       });
-      res.status(200).json({ message: "Data modified successfully", data });
+      return success(res, 200, data, "Data modified successfully");
     } else {
       data = await participantScores.create(
         {
@@ -57,7 +56,7 @@ const addParticipantScores = async (
         { raw: true }
       );
 
-      res.status(201).json({ message: "Data inserted successfully", data });
+      return success(res, 201, data, "Data inserted successfully");
     }
   } catch (error: any) {
     console.error("Error adding participant scores:", error);
@@ -68,9 +67,9 @@ const addParticipantScores = async (
       errorMessage =
         "Validation Error: " +
         error.errors.map((e: any) => e.message).join(", ");
-      res.status(400).json({ error: errorMessage });
+      return failure(res, 400, null, errorMessage);
     } else {
-      res.status(500).json({ error: errorMessage });
+      return failure(res, 500, null, errorMessage);
     }
   }
 };
