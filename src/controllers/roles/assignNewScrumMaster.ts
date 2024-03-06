@@ -13,12 +13,12 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
     const teamMemberId = parseInt(req.params.teamMemberId as string);
 
     if (isNaN(teamMemberId)) {
-      return failure(res, 400, null, "Invalid team member ID");
+      return res.status(400).json({ error: "Invalid team member ID" });
     }
 
     const teamMember = await teamMemberInformation.findByPk(teamMemberId);
     if (!teamMember) {
-      return failure(res, 404, null, "Team member not found");
+      return res.status(404).json({ error: "Team member not found" });
     }
 
     const updationTransaction = await sequelize.transaction();
@@ -33,7 +33,7 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
       }),
     ]);
     if (!scrumMasterRole || !developerRole) {
-      return failure(res, 500, null, "Roles not found");
+      return res.status(500).json({ error: "Roles not found" });
     }
 
     const newScrumMasterInfo = await teamMemberInformation.findOne({
@@ -113,14 +113,14 @@ const assignNewScrumMaster = async (req: Request, res: Response) => {
       if (oldScrumMasterInfo) {
         sendEmailNotification("nolongerScrumMaster", oldScrumMaster);
       }
-      return success(res, 200, null, "Role updated successfully");
+      res.status(200).json({ message: "Role updated successfully" });
     } else {
       updationTransaction.rollback();
       throw new Error("not updated!");
     }
   } catch (error) {
     console.error("Error:", error);
-    return failure(res, 500, null, "Internal server error!");
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

@@ -11,6 +11,7 @@ import sessionRouter from "./routers/sessions";
 import teamMemberInformationRouter from "./routers/teamMemberInformation";
 import userStorySesssionMappingRouter from "./routers/userStorySessionMapping";
 import participantScoresRouter from "./routers/participantScores";
+import notificationRouter from "./routers/notification";
 
 const chooseRoutes = (app: Express) => {
   app.use(teamInformationRouter);
@@ -25,6 +26,7 @@ const chooseRoutes = (app: Express) => {
   app.use(teamMemberInformationRouter);
   app.use(userStorySesssionMappingRouter);
   app.use(participantScoresRouter);
+  app.use(notificationRouter);
 };
 
 export default chooseRoutes;

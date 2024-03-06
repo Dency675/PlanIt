@@ -10,9 +10,15 @@ const resetStoryPoint = async (req: Request, res: Response) => {
       { storyPoint: "0" },
       { where: { userStorySessionMappingId: userStorySessionMappingId } }
     );
-    return success(res, 200, result, "Story points updated successfully");
+    res.json({
+      success: true,
+      message: "Story points updated successfully",
+      result,
+    });
   } catch (error) {
-    return failure(res, 500, error, "Failed to update story points");
+    res
+      .status(500)
+      .json({ message: "Failed to update story points", error: error });
   }
 };
 export default resetStoryPoint;

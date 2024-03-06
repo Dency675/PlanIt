@@ -19,7 +19,8 @@ export const postScales = async (
     const { estimationId, scaleName, scaleValue } = req.body;
 
     if (!scaleName || !estimationId || !scaleValue) {
-      return failure(res, 422, null, "Missing Values");
+      res.status(422).json({ error: "Missing Values " });
+      return;
     }
 
     const found = await Scales.create({
@@ -29,11 +30,11 @@ export const postScales = async (
     });
 
     if (found) {
-      return success(res, 201, null, "Scale Created");
+      res.status(201).json({ message: "Inserted" });
     } else {
-      return failure(res, 500, null, "Failed to insert data");
+      res.status(500).json({ error: "Failed to insert data" });
     }
   } catch (error) {
-    return failure(res, 500, null, "Internal server error!");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

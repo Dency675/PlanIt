@@ -19,7 +19,7 @@ const getParticipantScores = async (
     const teamMemberId = req.params.teamMemberId;
 
     if (!teamMemberId) {
-      return failure(res, 404, null, "Bad Request");
+      res.send(404).json({ error: "Bad Request" });
     }
 
     const data = await participantScores.findOne({
@@ -27,14 +27,10 @@ const getParticipantScores = async (
       raw: true,
     });
 
-    if (data) {
-      return success(res, 200, data.storyPoint, "Found Participant Score");
-    } else {
-      return failure(res, 404, null, "Data not found");
-    }
+    res.status(500).json(data?.storyPoint);
   } catch {
     (error: any) => {
-      return failure(res, 500, null, error.toString);
+      res.status(500).json({ error: error.toString() });
     };
   }
 };
