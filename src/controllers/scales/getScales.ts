@@ -20,7 +20,8 @@ export const getScalesByID = async (
     const { estimationId } = req.params;
 
     if (!estimationId) {
-      return failure(res, 422, null, "Missing Values");
+      res.status(422).json({ error: "Missing Values " });
+      return;
     }
 
     const data = await Scales.findAll({
@@ -43,11 +44,11 @@ export const getScalesByID = async (
 
       formattedData.push({ scaleName: "?", scaleValue: -1 });
 
-      return success(res, 201, formattedData, "Scale Found");
+      res.status(201).json({ formattedData });
     } else {
-      return failure(res, 404, null, "Data Doesnt exist");
+      res.status(404).json({ error: "Data Doesnt exist" });
     }
   } catch (error) {
-    return failure(res, 500, null, "Internal server error!");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

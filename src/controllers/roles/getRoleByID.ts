@@ -16,19 +16,21 @@ const getRoleByID = async (req: Request, res: Response) => {
     const id = req.params.id;
 
     if (!id) {
-      return failure(res, 422, null, "id is missing");
+      return res.status(422).json({
+        error: "id is missing",
+      });
     }
 
     const value = await roles.findOne({
       where: { id: id },
     });
     if (value) {
-      return success(res, 200, value, "Role found");
+      res.status(200).json(value);
     } else {
-      return failure(res, 404, null, "Role not found");
+      res.status(404).send("Error!\nRole not found...");
     }
   } catch (error) {
-    return failure(res, 500, error, "Internal server error!");
+    res.status(500).send("Internal server error!").json({ error: error });
   }
 };
 

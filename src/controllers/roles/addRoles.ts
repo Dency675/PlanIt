@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import roles from "../../models/roles";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the creation of a new role in the roles model.
@@ -11,24 +9,31 @@ import { success } from "../../helper/statusHandler/successFunction";
  * @returns {Promise<Response>} A JSON response indicating the success or failure of the operation.
  */
 
-const addRoles = async (req: Request, res: Response): Promise<void> => {
+const addRoles = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { roleName } = req.body;
 
     if (!roleName) {
-      return failure(res, 422, null, "role Name is missing");
+      return res.status(422).json({
+        error: "roleName is missing",
+      });
     }
 
-    const roleData = await roles.create(
+    const createRoles = await roles.create(
       {
         roleName: roleName,
       },
       { raw: true }
     );
 
-    return success(res, 201, roleData, "Role created.");
+    return res
+      .status(201)
+      .json({ message: `role created.`, data: createRoles });
   } catch (error) {
-    return failure(res, 500, null, "Internal server error!");
+    return res
+      .status(500)
+      .send("Internal server error!")
+      .json({ error: error });
   }
 };
 

@@ -17,7 +17,7 @@ const editRoles = async (req: Request, res: Response) => {
     const roleName = req.body.roleName;
 
     if (!roleName) {
-      return failure(res, 400, null, "Role name is missing or empty");
+      return res.status(400).send("Role name is missing or empty");
     }
 
     const updater = await roles.update(
@@ -26,17 +26,14 @@ const editRoles = async (req: Request, res: Response) => {
     );
 
     if (updater[0] === 1) {
-      return success(
-        res,
-        200,
-        null,
-        "Role no. ${id} has been sucessfully changed to: ${roleName}"
-      );
+      res
+        .status(200)
+        .send(`Role no. ${id} has been sucessfully changed to: ${roleName}`);
     } else {
-      return failure(res, 404, null, "Role is not found");
+      res.status(404).send("Role is not found");
     }
   } catch (error) {
-    return failure(res, 500, error, "Internal server error!");
+    res.status(500).send("Internal server error!").json({ error: error });
   }
 };
 

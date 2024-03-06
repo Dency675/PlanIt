@@ -18,7 +18,8 @@ const addParticipantScores = async (
     const { teamMemberId, userStorySessionMappingId, storyPoint } = req.body;
 
     if (teamMemberId && userStorySessionMappingId && storyPoint == undefined) {
-      return failure(res, 400, null, "Bad Request - Missing required fields");
+      res.status(400).json({ error: "Bad Request - Missing required fields" });
+      return;
     }
 
     let data = await participantScores.findOne({
@@ -45,7 +46,7 @@ const addParticipantScores = async (
           userStorySessionMappingId,
         },
       });
-      return success(res, 200, data, "Data modified successfully");
+      res.status(200).json({ message: "Data modified successfully", data });
     } else {
       data = await participantScores.create(
         {
@@ -56,7 +57,7 @@ const addParticipantScores = async (
         { raw: true }
       );
 
-      return success(res, 201, data, "Data inserted successfully");
+      res.status(201).json({ message: "Data inserted successfully", data });
     }
   } catch (error: any) {
     console.error("Error adding participant scores:", error);
@@ -67,9 +68,9 @@ const addParticipantScores = async (
       errorMessage =
         "Validation Error: " +
         error.errors.map((e: any) => e.message).join(", ");
-      return failure(res, 400, null, errorMessage);
+      res.status(400).json({ error: errorMessage });
     } else {
-      return failure(res, 500, null, errorMessage);
+      res.status(500).json({ error: errorMessage });
     }
   }
 };

@@ -17,7 +17,7 @@ const listOfParticipantsWithTheirScore = async (
 
     const enteredSession = await sessions.findByPk(sessionId);
     if (!enteredSession) {
-      return failure(res, 404, null, "Session not found");
+      return res.status(404).json({ error: "Session not found" });
     }
 
     const teamId = enteredSession.teamId;
@@ -79,10 +79,10 @@ const listOfParticipantsWithTheirScore = async (
       };
     });
 
-    return success(res, 200, combinedResult, "Participants Score");
+    res.status(200).json({ combinedResult });
   } catch (error) {
     console.error("Error:", error);
-    return failure(res, 500, null, "Internal server error!");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
