@@ -1,6 +1,8 @@
-import Estimations from '../../models/estimations';
-import { Request, Response } from 'express';
-import { Op } from "sequelize"; 
+import Estimations from "../../models/estimations";
+import { Request, Response } from "express";
+import { Op } from "sequelize";
+import { failure } from "D:/PlanIt/src/helper/statusHandler/failureFunction";
+import { success } from "D:/PlanIt/src/helper/statusHandler/successFunction";
 
 /**
  * Handles the search functionality of an estimation in the Estimation model.
@@ -11,28 +13,28 @@ import { Op } from "sequelize";
  */
 
 export const searchEstimations = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
-    try {
-      const { search } = req.query;
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const search = req.params.name;
 
-      if (!search) {
-        res.status(422).json({error: "Missing Values "});
-        return;
-      }
-
-      const results = await Estimations.findAll({
-        where: {
-          estimationName: {
-            [Op.like]: `%${search}%`,
-          },
-        },
-      });
-      
-      res.status(200).json({ message: results });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal Server Error" });
+    if (!search) {
+      res.status(422).json({ error: "Missing Values " });
+      return;
     }
-  };
+
+    const results = await Estimations.findAll({
+      where: {
+        estimationName: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+    });
+
+    res.status(200).json({ message: results });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};

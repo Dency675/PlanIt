@@ -14,7 +14,7 @@ const getNoteInformationById = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { id } = req.query;
+    const id = req.params.id;
 
     if (!id) {
       return res.status(422).json({

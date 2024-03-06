@@ -7,48 +7,38 @@ import {
 import { putEstimations } from "../controllers/estimations/putEstimations";
 import { deleteEstimations } from "../controllers/estimations/deleteEstimations";
 import { searchEstimations } from "../controllers/estimations/searchEstimations";
-// import { searchTeams } from "../controllers/team_information/searchTeams";
-// import { searchUser } from "../controllers/user_information/searchUser";
 import { uploadEstimations } from "../controllers/estimations/addEstimations";
 import multer from "multer";
 
 const upload = multer({ dest: "uploads/" });
 
 const router: Router = express.Router();
-router.post("/postEstimations", async (req: Request, res: Response) => {
+router.post("/estimations", async (req: Request, res: Response) => {
   postEstimations(req, res);
 });
 
-router.get("/getEstimations", async (req: Request, res: Response) => {
+router.get("/estimations", async (req: Request, res: Response) => {
   getEstimations(req, res);
 });
 
-router.get("/getEstimationsByID", async (req: Request, res: Response) => {
+router.get("/estimations/:name", async (req: Request, res: Response) => {
   getEstimationsByID(req, res);
 });
 
-router.put("/putEstimations", async (req: Request, res: Response) => {
+router.put("/estimations", async (req: Request, res: Response) => {
   putEstimations(req, res);
 });
 
-router.patch("/deleteEstimations", async (req: Request, res: Response) => {
+router.patch("/estimations", async (req: Request, res: Response) => {
   deleteEstimations(req, res);
 });
 
-router.get("/searchEstimations", async (req: Request, res: Response) => {
+router.get("/estimations/:search", async (req: Request, res: Response) => {
   searchEstimations(req, res);
 });
 
-// router.get("/searchTeams", async(req: Request, res: Response) => {
-//     searchTeams(req,res);
-// });
-
-// router.get("/searchUser", async(req: Request, res: Response) => {
-//     searchUser(req,res);
-// });
-
 router.post(
-  "/addEstimations",
+  "/estimationsupload",
   upload.single("csvFile"),
   async (req: Request, res: Response) => {
     uploadEstimations(req, res);

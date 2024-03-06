@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import Estimations from "../../models/estimations";
+import { failure } from "D:/PlanIt/src/helper/statusHandler/failureFunction";
+import { success } from "D:/PlanIt/src/helper/statusHandler/successFunction";
 
 /**
  * Handles the retrieval of estimations in the Estimation model.
@@ -14,7 +16,7 @@ export const getEstimationsByID = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { estimationName } = req.query;
+    const estimationName = req.params.name;
 
     if (!estimationName) {
       res.status(422).json({ error: "Missing Estimation Name " });
@@ -22,7 +24,7 @@ export const getEstimationsByID = async (
     }
 
     const data = await Estimations.findOne({
-      where: { estimationName: estimationName },
+      where: { estimationName },
       raw: true,
     });
 

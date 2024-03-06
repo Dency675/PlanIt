@@ -9,46 +9,28 @@ import searchAndSortNoteInformation from "../controllers/noteInformation/searchA
 
 const noteInformationRouter = express.Router();
 
-noteInformationRouter.post(
-  "/addNoteInformation",
-  (req: Request, res: Response) => {
-    addNoteInformation(req, res);
-  }
-);
+noteInformationRouter.post("/note", (req: Request, res: Response) => {
+  addNoteInformation(req, res);
+});
 
-noteInformationRouter.get(
-  "/getNoteInformation",
-  (req: Request, res: Response) => {
-    getNoteInformation(req, res);
-  }
-);
+noteInformationRouter.get("/note", (req: Request, res: Response) => {
+  getNoteInformation(req, res);
+});
 
-noteInformationRouter.get(
-  "/getNoteInformationById",
-  (req: Request, res: Response) => {
-    getNoteInformationById(req, res);
-  }
-);
+noteInformationRouter.get("/note/:id", (req: Request, res: Response) => {
+  getNoteInformationById(req, res);
+});
 
-noteInformationRouter.delete(
-  "/deleteNoteInformation",
-  (req: Request, res: Response) => {
-    deleteNoteInformation(req, res);
-  }
-);
+noteInformationRouter.delete("/note/:id", (req: Request, res: Response) => {
+  deleteNoteInformation(req, res);
+});
 
-noteInformationRouter.put(
-  "/editNoteInformation",
-  (req: Request, res: Response) => {
-    editNoteInformation(req, res);
-  }
-);
+noteInformationRouter.put("/note", (req: Request, res: Response) => {
+  editNoteInformation(req, res);
+});
 
-noteInformationRouter.get(
-  "/searchAndSortNoteInformation",
-  (req: Request, res: Response) => {
-    searchAndSortNoteInformation(req, res);
-  }
-);
+noteInformationRouter.get("/note/:title", (req: Request, res: Response) => {
+  searchAndSortNoteInformation(req, res);
+});
 
 export default noteInformationRouter;

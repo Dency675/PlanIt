@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import NoteInformation from "../../models/noteInformation";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Deletes a note from the NoteInformation model by its unique identifier (id).
@@ -13,7 +15,7 @@ const deleteNoteInformation = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const { id } = req.query;
+    const id = req.params.id;
 
     if (!id || isNaN(Number(id))) {
       return res.status(422).json({

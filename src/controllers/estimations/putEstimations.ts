@@ -1,5 +1,7 @@
-import { Request, Response } from 'express';
-import Estimations from '../../models/estimations';
+import { Request, Response } from "express";
+import Estimations from "../../models/estimations";
+import { failure } from "D:/PlanIt/src/helper/statusHandler/failureFunction";
+import { success } from "D:/PlanIt/src/helper/statusHandler/successFunction";
 
 /**
  * Handles the update of an estimation in the Estimation model.
@@ -9,33 +11,29 @@ import Estimations from '../../models/estimations';
  * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
  */
 
-export const putEstimations = async(req: Request, res: Response):Promise<void> => {
+export const putEstimations = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id, estimationName } = req.body;
 
-try{
-    const { id,estimationName } = req.body;
-    
-    if (!id||!estimationName) {
-      res.status(422).json({error: "Missing Values "});
-      return;
+    if (!id || !estimationName) {
+      return failure(res, 422, null, "Missing Values");
     }
-   
+
     const found = await Estimations.update(
-          {
-            estimationName:estimationName,
-          } 
-          , { where: { id: id}}
-        );
+      { estimationName },
+      { where: { id } }
+    );
 
-        if (found) {
-          res.status(201).json({ message: "Inserted" });
-        } else {
-          res.status(500).json({ error: "Failed to insert data" });
-        }
-
-        }catch(error){
-          console.log("Error in putEstimation",error);
-          res.status(500).json({ message: "Internal Server Error" });
-        }
-
+    if (found) {
+      return success(res, 201, { message: "Updated successfully" });
+    } else {
+      return failure(res, 500, null, "Failed to update data");
     }
-
+  } catch (error) {
+    console.error("Error in putEstimation", error);
+    return failure(res, 500, null, "Internal Server Error");
+  }
+};

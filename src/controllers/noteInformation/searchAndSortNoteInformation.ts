@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { Op, OrderItem } from "sequelize";
 import NoteInformation from "../../models/noteInformation";
+import { failure } from "../../helper/statusHandler/failureFunction";
+import { success } from "../../helper/statusHandler/successFunction";
 
 /**
 Searches for NoteInformation records based on the provided parameters and
@@ -16,15 +18,12 @@ const searchAndSortNoteInformation = async (
   res: Response
 ): Promise<Response> => {
   try {
-    const {
-      sortBy,
-      sortOrder = "asc",
-      noteTitle,
-    } = req.query as {
+    const { sortBy, sortOrder = "asc" } = req.query as {
       sortBy?: string;
       sortOrder?: string;
-      noteTitle: string;
     };
+
+    const noteTitle = req.params.title;
 
     let order: OrderItem[] = [];
     if (sortBy && (sortBy === "noteTitle" || sortBy === "createdAt")) {

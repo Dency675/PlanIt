@@ -21,7 +21,7 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
       sortOrder,
       fromDate,
       toDate,
-      limit = 5,
+      // limit = 5,
       offset = 0,
     } = req.body;
 
@@ -60,7 +60,7 @@ const getAllRecentMeetingsOfUser = async (req: Request, res: Response) => {
       },
       order: [],
       offset: offset,
-      limit: limit,
+      // limit: limit,
     };
 
     // Sorting
