@@ -9,7 +9,7 @@ function success(
 ): void {
   res
     .status(statusCode)
-    .send({
+    .json({
       message,
       data,
     })
