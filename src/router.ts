@@ -26,7 +26,7 @@ const chooseRoutes = (app: Express) => {
   app.use(teamMemberInformationRouter);
   app.use(userStorySesssionMappingRouter);
   app.use(participantScoresRouter);
-  app.use(notificationRouter);
+  // app.use(notificationRouter);
 };
 
 export default chooseRoutes;
