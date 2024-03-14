@@ -19,7 +19,7 @@ router.post("/postEstimations", async (req: Request, res: Response) => {
   postEstimations(req, res);
 });
 
-router.get("/getEstimations", async (req: Request, res: Response) => {
+router.get("/getEstimations/:userId", async (req: Request, res: Response) => {
   getEstimations(req, res);
 });
 

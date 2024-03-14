@@ -21,14 +21,14 @@ const getAllTeamManager = async (
 
     // Find user information for the extracted userIds with status 'active'
     const users = await UserInformation.findAll({
-      where: { id: userIds, status: 'active' },
+      where: { id: userIds, status: "active" },
       include: [
         {
           model: EmployeeRoleMapping,
           where: { roleId: roleId },
-          required: false // Use left join to include all users
-        }
-      ]
+          required: false, // Use left join to include all users
+        },
+      ],
     });
 
     if (!users || users.length === 0) {
@@ -36,7 +36,9 @@ const getAllTeamManager = async (
       return;
     }
 
-    res.status(200).json({ message: "Users retrieved successfully", data: users });
+    res
+      .status(200)
+      .json({ message: "Users retrieved successfully", data: users });
   } catch (error) {
     console.error("Error retrieving users:", error);
     res.status(500).json({ error: "Internal Server Error" });

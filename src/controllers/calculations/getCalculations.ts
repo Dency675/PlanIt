@@ -11,7 +11,7 @@ import calculations from "../../models/calculations";
 
 const getCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.query;
+    const id = req.params.id;
     if (!id) {
       res.status(400).json({
         message: "ID not provided",
@@ -20,7 +20,7 @@ const getCalculations = async (req: Request, res: Response): Promise<void> => {
     }
 
     const found = await calculations.findOne({
-      where: { id: id }, 
+      where: { id: id },
     });
     if (found) {
       res.status(200).json({
@@ -34,7 +34,7 @@ const getCalculations = async (req: Request, res: Response): Promise<void> => {
     }
   } catch (error) {
     console.error("Error in calculationsGet:", error);
-    res.status(500).json({  
+    res.status(500).json({
       message: "Internal Server Error",
     });
   }

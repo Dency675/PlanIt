@@ -16,7 +16,7 @@ const getAllRolesOfUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userId: string | undefined = req.query.userId as string;
+    const userId: string | undefined = req.params.id as string;
 
     // Validate input
     if (!userId) {

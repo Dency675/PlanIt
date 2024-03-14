@@ -14,7 +14,6 @@ import getUserInformationById from "../controllers/userInformation/getUserInform
 import getUserInformationByRoleId from "../controllers/employeeRoleMapping/getAllTeamManager";
 import getAllTeamManager from "../controllers/employeeRoleMapping/getAllTeamManager";
 
-
 const userInformationRouter: Router = express.Router();
 userInformationRouter.post(
   "/addUser",
@@ -43,27 +42,6 @@ userInformationRouter.get(
   }
 );
 
-userInformationRouter.post(
-  "/addEmployeeRole",
-  async (req: Request, res: Response) => {
-    addEmployeeRole(req, res);
-  }
-);
-
-userInformationRouter.patch(
-  "/editEmployeeRole",
-  async (req: Request, res: Response) => {
-    editEmployeeRole(req, res);
-  }
-);
-
-userInformationRouter.get(
-  "/getAllRolesOfUser",
-  async (req: Request, res: Response) => {
-    getAllRolesOfUser(req, res);
-  }
-);
-
 userInformationRouter.get(
   "/searchUser",
   async (req: Request, res: Response) => {
@@ -78,20 +56,39 @@ userInformationRouter.post(
   }
 );
 
+userInformationRouter.post(
+  "/employeeRole",
+  async (req: Request, res: Response) => {
+    addEmployeeRole(req, res);
+  }
+);
+
+userInformationRouter.patch(
+  "/employeeRole",
+  async (req: Request, res: Response) => {
+    editEmployeeRole(req, res);
+  }
+);
+
+userInformationRouter.get(
+  "/employeeRole/:id",
+  async (req: Request, res: Response) => {
+    getAllRolesOfUser(req, res);
+  }
+);
+
 userInformationRouter.put(
-  "/updateUserRoleToProjectManager",
+  "/employeeRole/:id",
   async (req: Request, res: Response) => {
     updateUserRoleToProjectManager(req, res);
   }
 );
 
 userInformationRouter.get(
-  "/getAllTeamManager",
+  "/employeeRole/teamManager",
   async (req: Request, res: Response) => {
     getAllTeamManager(req, res);
   }
 );
-
-
 
 export default userInformationRouter;

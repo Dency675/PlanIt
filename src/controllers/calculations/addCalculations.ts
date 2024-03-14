@@ -23,7 +23,7 @@ const addCalculations = async (req: Request, res: Response): Promise<void> => {
     const calculation = await calculations.create({ calculationName });
     res.status(200).json({
       message: "Data inserted successfully",
-      data: calculation.toJSON(), 
+      data: calculation.toJSON(),
     });
   } catch (error) {
     console.error("Error inserting data:", error);
