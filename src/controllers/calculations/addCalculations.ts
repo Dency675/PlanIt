@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the creation of a new calculation method in the calculations model.
@@ -16,18 +14,22 @@ const addCalculations = async (req: Request, res: Response): Promise<void> => {
     const { calculationName } = req.body;
 
     if (!calculationName) {
-      failure(res, 400, null, "Calculation name not provided");
+      res.status(400).json({
+        error: "Calculation name not provided",
+      });
       return;
     }
 
     const calculation = await calculations.create({ calculationName });
-    success(res, 200, {
+    res.status(200).json({
       message: "Data inserted successfully",
       data: calculation.toJSON(),
     });
   } catch (error) {
     console.error("Error inserting data:", error);
-    failure(res, 500, null, "Server Error");
+    res.status(500).json({
+      error: "Server Error",
+    });
   }
 };
 

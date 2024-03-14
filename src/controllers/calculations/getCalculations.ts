@@ -1,39 +1,42 @@
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
- * Handles the retrieval of a calculation method by ID.
+ * Handles the retrival of calculation method.
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
- * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
+ * @returns {Promise<Response>} A JSON response indicating the success or failure of the operation.
  */
 
 const getCalculations = async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
     if (!id) {
-      failure(res, 400, null, "ID not provided");
+      res.status(400).json({
+        message: "ID not provided",
+      });
       return;
     }
 
     const found = await calculations.findOne({
       where: { id: id },
     });
-
     if (found) {
-      success(res, 200, {
+      res.status(200).json({
         message: "Data retrieved successfully",
         data: found,
       });
     } else {
-      failure(res, 404, null, "Data not found");
+      res.status(404).json({
+        message: "Data not found",
+      });
     }
   } catch (error) {
     console.error("Error in calculationsGet:", error);
-    failure(res, 500, null, "Internal Server Error");
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
   }
 };
 

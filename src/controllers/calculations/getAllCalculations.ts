@@ -1,14 +1,12 @@
 import { Request, Response } from "express";
 import calculations from "../../models/calculations";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
- * Handles the retrieval of calculation methods.
+ * Handles the retrival of calculation method.
  *
  * @param {Request} req - Express Request object containing client data.
  * @param {Response} res - Express Response object for sending the server's response.
- * @returns {Promise<void>} A JSON response indicating the success or failure of the operation.
+ * @returns {Promise<Response>} A JSON response indicating the success or failure of the operation.
  */
 
 export const getAllCalculations = async (
@@ -19,13 +17,13 @@ export const getAllCalculations = async (
     const data = await calculations.findAll({ raw: true });
 
     if (data) {
-      success(res, 201, { ...data });
+      res.status(201).json({ ...data });
     } else {
-      failure(res, 500, null, "Data Doesn't exist");
+      res.status(500).json({ error: "Data Doesnt exist" });
     }
   } catch (error) {
     console.log("Error in getEstimation", error);
-    failure(res, 500, null, "Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

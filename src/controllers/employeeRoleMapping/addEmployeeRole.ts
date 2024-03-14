@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Adds a new employee role mapping for a user.
@@ -18,7 +16,7 @@ const addEmployeeRole = async (req: Request, res: Response): Promise<void> => {
     const { userId, roleId } = req.body;
 
     if (!userId || !roleId) {
-      failure(res, 400, null, "User ID and Role ID are required");
+      res.status(400).json({ error: "User ID and Role ID are required" });
       return;
     }
 
@@ -26,7 +24,7 @@ const addEmployeeRole = async (req: Request, res: Response): Promise<void> => {
     const role = await Role.findByPk(roleId);
 
     if (!user || !role) {
-      failure(res, 404, null, "User or Role not found");
+      res.status(404).json({ error: "User or Role not found" });
       return;
     }
 
@@ -35,13 +33,10 @@ const addEmployeeRole = async (req: Request, res: Response): Promise<void> => {
       roleId: roleId,
     });
 
-    success(res, 200, {
-      message: "Employee role added successfully",
-      data: employeeRole.toJSON(),
-    });
+    return;
   } catch (error) {
     console.error("Error adding employee role:", error);
-    failure(res, 500, null, "Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

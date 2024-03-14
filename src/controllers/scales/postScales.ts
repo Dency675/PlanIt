@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import Scales from "../../models/scales";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 
 /**
  * Handles the creation of a scale in the Scale model.
@@ -16,18 +14,21 @@ export const postScales = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { estimationId, scaleName, scaleValue } = req.body;
+    const { estimationId, cardValues } = req.body;
 
-    if (!scaleName || !estimationId || !scaleValue) {
+    if (!estimationId || !cardValues || cardValues.length === 0) {
       res.status(422).json({ error: "Missing Values " });
       return;
     }
 
-    const found = await Scales.create({
+    // Assuming Scales model has fields 'estimationId', 'scaleName', and 'scaleValue'
+    const scalesData = cardValues.map((scaleName: any, index: number) => ({
       estimationId: estimationId,
       scaleName: scaleName,
-      scaleValue: scaleValue,
-    });
+      scaleValue: index + 1, // Assuming scaleValue represents the order of the card
+    }));
+
+    const found = await Scales.bulkCreate(scalesData);
 
     if (found) {
       res.status(201).json({ message: "Inserted" });
@@ -35,6 +36,7 @@ export const postScales = async (
       res.status(500).json({ error: "Failed to insert data" });
     }
   } catch (error) {
+    console.log("Error in postScales", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

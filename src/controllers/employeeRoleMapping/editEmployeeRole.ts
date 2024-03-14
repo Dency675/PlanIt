@@ -2,9 +2,8 @@ import { Request, Response } from "express";
 import EmployeeRoleMapping from "../../models/employeeRoleMapping";
 import UserInformation from "../../models/userInformation";
 import Role from "../../models/roles";
-import { failure } from "../../helper/statusHandler/failureFunction";
-import { success } from "../../helper/statusHandler/successFunction";
 import { sendEmailNotification } from "../email/send_mail";
+import employeeRoleMapping from "../../models/employeeRoleMapping";
 
 /**
  * Edits the role of an employee by updating the employee role mapping.
@@ -19,12 +18,9 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
     const { userId, oldRoleId, newRoleId } = req.body;
 
     if (!userId || !oldRoleId || !newRoleId) {
-      failure(
-        res,
-        400,
-        null,
-        "User ID, Old Role ID, and New Role ID are required"
-      );
+      res
+        .status(400)
+        .json({ error: "User ID, Old Role ID, and New Role ID are required" });
       return;
     }
 
@@ -33,16 +29,16 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
     const newRole = await Role.findByPk(newRoleId);
 
     if (!user || !oldRole || !newRole) {
-      failure(res, 404, null, "User, Old Role, or New Role not found");
+      res.status(404).json({ error: "User, Old Role, or New Role not found" });
       return;
     }
 
     const employeeRole = await EmployeeRoleMapping.findOne({
       where: { userId: userId, roleId: oldRoleId },
     });
-
+    console.log(employeeRole);
     if (!employeeRole) {
-      failure(res, 404, null, "Employee role mapping not found");
+      res.status(404).json({ error: "Employee role mapping not found" });
       return;
     }
 
@@ -59,6 +55,7 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
         throw new Error("Team member information not found");
       }
 
+      // Extract and format user info from the result
       const newProjectManagerInfo = [
         {
           name: newProjectManager.givenName,
@@ -68,14 +65,13 @@ const editEmployeeRole = async (req: Request, res: Response): Promise<void> => {
 
       sendEmailNotification("projectManagerAdded", newProjectManagerInfo);
     }
-
-    success(res, 200, {
+    res.status(200).json({
       message: "Employee role updated successfully",
       data: employeeRole,
     });
   } catch (error) {
     console.error("Error updating employee role:", error);
-    failure(res, 500, null, "Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
