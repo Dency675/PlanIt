@@ -36,11 +36,15 @@ const addUserStoriesAndSessionMapping = async (
     const s3DataResponse = await getS3Data(req, res);
 
     const userStoriesArray = s3DataResponse.data;
+    console.log("userStoriesArray", userStoriesArray);
 
     const createdUserStories = await userStories.bulkCreate(
       userStoriesArray.map((userStory: any) => ({
         key,
         userStory: userStory.userStory,
+        userStoryId: userStory.userStoryId,
+        description: userStory.description,
+        issueKey: userStory.issueKey,
       }))
     );
 

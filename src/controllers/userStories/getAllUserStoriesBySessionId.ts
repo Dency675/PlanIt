@@ -24,7 +24,13 @@ const getAllUserStoriesBySessionId = async (
         {
           model: UserStories,
           as: "userStory",
-          attributes: ["id", "userStory"],
+          attributes: [
+            "id",
+            "userStory",
+            "issueKey",
+            "description",
+            "userStoryId",
+          ],
         },
       ],
     });
@@ -35,6 +41,9 @@ const getAllUserStoriesBySessionId = async (
       roundNumber: mapping.roundNumber,
       storyPointResult: mapping.storyPointResult,
       userStory: mapping.userStory.userStory,
+      userStoryKey: mapping.userStory.issueKey,
+      description: mapping.userStory.description,
+      userStoryIdInJira: mapping.userStory.userStoryId,
     }));
 
     return res.status(200).json({

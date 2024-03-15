@@ -11,9 +11,21 @@ userStories.init(
       allowNull: false,
       unique: true,
     },
+    userStoryId: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
 
     userStory: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    issueKey: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },

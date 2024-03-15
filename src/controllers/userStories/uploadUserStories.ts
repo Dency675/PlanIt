@@ -45,6 +45,8 @@ const uploadUserStories = async (req: Request, res: Response) => {
             },
           });
 
+          console.log(existingUserStory);
+
           if (existingUserStory.length > 0) {
             return res
               .status(422)
@@ -77,12 +79,10 @@ const uploadUserStories = async (req: Request, res: Response) => {
         "Unknown error during processing and database insertion:",
         error
       );
-      res
-        .status(500)
-        .json({
-          error: "Internal server error",
-          details: "Unknown error occurred",
-        });
+      res.status(500).json({
+        error: "Internal server error",
+        details: "Unknown error occurred",
+      });
     }
   }
 };

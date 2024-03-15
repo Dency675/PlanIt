@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import userStories from "../../models/userStories";
+import userStorySessionMapping from "../../models/userStorySessionMapping";
 
 /**
  * Express route handler to add user stories to the database.
@@ -12,7 +13,7 @@ import userStories from "../../models/userStories";
 
 const addUserStories = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userStories: userStoriesArray } = req.body;
+    const { userStories: userStoriesArray, sessionId } = req.body;
     if (
       !userStoriesArray ||
       !Array.isArray(userStoriesArray) ||
@@ -25,13 +26,35 @@ const addUserStories = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const createdUserStories = await userStories.bulkCreate(
-      userStoriesArray.map((userStory: string) => ({ userStory }))
+    const createdUserStories = await Promise.all(
+      userStoriesArray.map(
+        ({ userStory, userStoryId, description, issueKey }) =>
+          userStories.create({ userStory, userStoryId, description, issueKey })
+      )
+    );
+
+    const userStoryIds = createdUserStories.map(
+      (userStory: any) => userStory.id
+    );
+
+    const createdUserStorySessionMapping = await Promise.all(
+      userStoryIds.map((userStoryId: any) =>
+        userStorySessionMapping.create(
+          {
+            userStoryId,
+            sessionId,
+            roundNumber: 0,
+            comment: "",
+            storyPointResult: 0,
+          },
+          { raw: true }
+        )
+      )
     );
 
     res.status(200).json({
       message: "Data inserted successfully",
-      data: createdUserStories,
+      data: { createdUserStories, createdUserStorySessionMapping },
     });
   } catch (error: any) {
     if (error.name === "SequelizeValidationError") {

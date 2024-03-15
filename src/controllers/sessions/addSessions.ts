@@ -33,6 +33,7 @@ const addSessions = async (
       sessionTitle,
       createDateTime,
       timer,
+      excelLink,
       teamId,
       scrumMasterId,
       estimationId,
@@ -53,40 +54,49 @@ const addSessions = async (
         .json({ message: "Missing required fields" });
     }
 
-    const file = req?.file as Express.Multer.File;
-
-    const params: AWS.S3.PutObjectRequest = {
-      Bucket: process.env.AWS_BUCKET_NAME!,
-      Key: file?.originalname,
-      Body: Readable.from(file?.buffer),
-      ContentType: file?.mimetype,
-    };
-
-    const s3UploadAsync = (
-      params: AWS.S3.PutObjectRequest
-    ): Promise<ManagedUpload.SendData> => {
-      return new Promise((resolve, reject) => {
-        s3.upload(params, (err: Error, data: ManagedUpload.SendData) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        });
-      });
-    };
-
-    console.log("file is : ", req.file);
-    console.log("file is : ", req.file?.originalname);
+    let excelLinkLocation = "";
     let fileName = "";
-    if (req.file) fileName = req.file.originalname;
 
-    const excelLink = await s3UploadAsync(params);
+    if (excelLink !== "jira") {
+      const file = req?.file as Express.Multer.File;
+
+      const params: AWS.S3.PutObjectRequest = {
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: file?.originalname,
+        Body: Readable.from(file?.buffer),
+        ContentType: file?.mimetype,
+      };
+
+      const s3UploadAsync = (
+        params: AWS.S3.PutObjectRequest
+      ): Promise<ManagedUpload.SendData> => {
+        return new Promise((resolve, reject) => {
+          s3.upload(params, (err: Error, data: ManagedUpload.SendData) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(data);
+            }
+          });
+        });
+      };
+
+      console.log("file is : ", req.file);
+      console.log("file is : ", req.file?.originalname);
+
+      if (req.file) fileName = req.file.originalname;
+
+      const excelLinks = await s3UploadAsync(params);
+      excelLinkLocation = excelLinks.Location;
+    } else if (excelLink === "jira") {
+      excelLinkLocation = "jira";
+    }
+
     const newSession = await Session.create({
       sessionTitle: sessionTitle,
       createDateTime: createDateTime,
       timer,
-      excelLink: excelLink.Location,
+      excelLink: excelLinkLocation,
       teamId: teamId,
       scrumMasterId: scrumMasterId,
       estimationId: estimationId,

@@ -16,7 +16,7 @@ const s3 = new AWS.S3();
 const getS3Data = (req: Request, res: Response): Promise<any> => {
   return new Promise((resolve, reject) => {
     const bucketName = "ecommercebucket1";
-    const key = "userStories - Sheet2.csv";
+    const { key } = req.body;
 
     const params = { Bucket: bucketName, Key: key };
     const s3Data = s3.getObject(params).createReadStream();

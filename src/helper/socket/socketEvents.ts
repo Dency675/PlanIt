@@ -8,8 +8,8 @@ import { UserData } from "./types/index";
 export const joinRoom = async (
   io: Server,
   socket: Socket,
-  userId: string,
-  sessionId: string
+  sessionId: string,
+  userId: string
 ) => {
   try {
     socket.join(sessionId);

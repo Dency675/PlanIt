@@ -12,7 +12,7 @@ import userStories from "../../models/userStories";
 
 const updateUserStory = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, userStory } = req.body;
+    const { id, userStory, issueKey, description } = req.body;
 
     if (!userStory || !id) {
       res.status(400).json({
@@ -34,7 +34,10 @@ const updateUserStory = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    await userStories.update({ userStory }, { where: { id } });
+    await userStories.update(
+      { userStory, issueKey, description },
+      { where: { id } }
+    );
 
     res.status(200).json({ message: "Data updated successfully" });
   } catch (error: any) {
